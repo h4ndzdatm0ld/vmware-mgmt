@@ -1,0 +1,8 @@
+---
+- name: "EXAMPLE PLAYBOOK"
+  hosts: "localhost"
+  gather_facts: false
+  tasks:
+    - name: "DEBUG HELLO WORLD"
+      debug:
+        msg: "Hello World"

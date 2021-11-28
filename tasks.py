@@ -4,7 +4,7 @@ from invoke import task
 
 @task
 def yamllint(context):
-    """Run yamllint to validate formatting adheres to NTC defined YAML standards."""
+    """Run yamllint to validate formatting adheres to NTC YAML standards."""
     exec_cmd = "yamllint ."
     context.run(exec_cmd)
 

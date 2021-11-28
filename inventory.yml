@@ -1,0 +1,9 @@
+---
+all:
+  children:
+    workstation:
+      hosts:
+        devpop:
+    servers:
+      hosts:
+        esxi:
