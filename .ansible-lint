@@ -1,0 +1,4 @@
+rulesdir:
+  - ./tests/ansible-lint-rules
+use_default_rules: true
+verbosity: 1
