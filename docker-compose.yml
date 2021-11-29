@@ -10,6 +10,7 @@ services:
     build:
       target: cli
       context: .
+    network_mode: host # Allow local host access.
     environment:
       ANSIBLE_COLLECTIONS_PATH: /usr/share/ansible/collections
       ANSIBLE_ROLES_PATH: /usr/share/ansible/roles
@@ -17,4 +18,6 @@ services:
       WORKSTRATION_USERNAME: ${WORKSTRATION_USERNAME}
       WORKSTRATION_PASSWORD: ${WORKSTRATION_PASSWORD}
       WORKSTRATION_PORT: ${WORKSTRATION_PORT}
+      CLONED_VM_NAME: ${CLONED_VM_NAME}
+      VM_ID: ${VM_ID}
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:cli}

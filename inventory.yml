@@ -4,6 +4,7 @@ all:
     workstation:
       hosts:
         devpop:
+          ansible_host: "127.0.0.1"
     servers:
       hosts:
         esxi:
