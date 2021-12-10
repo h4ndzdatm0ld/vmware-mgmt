@@ -22,6 +22,13 @@ Personal project used to manage a local VMWare Workstation Pro instance.
 
 ---
 
+Ensure that the VMWARE API is running. Substitute the cert.pem and key.pem for yours.
+Initial run will require -C flag to configure user/password.
+
+```bash
+vmrest -c workstationapi-cert.pem -k workstationapi-key.pem
+```
+
 ## Examples
 
 The goal of this project was to have a quick way to create a simple VM from a local template. The local template is referenced by the ID of the Virtual Machine. This is specified via env variable, `VM_ID`.
