@@ -2,7 +2,7 @@
 
 VMWare Management with Ansible
 
-Personal project used to manage a local  VMWare Workstation Pro instance.
+Personal project used to manage a local VMWare Workstation Pro instance.
 
 ## Requirements
 
@@ -26,8 +26,6 @@ Personal project used to manage a local  VMWare Workstation Pro instance.
 
 The goal of this project was to have a quick way to create a simple VM from a local template. The local template is referenced by the ID of the Virtual Machine. This is specified via env variable, `VM_ID`.
 
-A value that is hardcoded, is the path for the folder directory. This could be later on re-evaluated if needed to be re-used.
-
 The name of the new VM to create can also be overridden by extra-vars while invoking the playbook.
 To run the playbook within a docker container:
 
@@ -45,15 +43,17 @@ export WORKSTRATION_PORT=...
 export WORKSTATION_VALIDATE_CERTS=...
 export CLONED_VM_NAME=... [NAME OF THE NEW VM]
 export VM_ID=... [VM ID BEING USED AS TEMPLATE TO CLONE FROM]
+export WORKSTATION_PROJECT_DIR=... [PATH TO WHERE VM SHOULD BE STORED]
 export ansible_password=... [STANDARD ANSIBLE]
 export ansible_user=...[STANDARD ANSIBLE]
 ```
 
----
+`WORKSTATION_PROJECT_DIR` must match the default location for Virtual Machines
+![VM Location](docs/default_location.png)
 
 ## Testing
 
-For testing guidelines see explanation see [Testing](tests/README.md)
+For testing guidelines explanation see [Testing](tests/README.md)
 
 ---
 
