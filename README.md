@@ -48,7 +48,8 @@ export ansible_password=... [STANDARD ANSIBLE]
 export ansible_user=...[STANDARD ANSIBLE]
 ```
 
----
+`WORKSTATION_PROJECT_DIR` must match the default location for Virtual Machines
+![VM Location](docs/default_location.png)
 
 ## Testing
 
