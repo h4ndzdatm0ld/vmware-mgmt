@@ -1,0 +1,79 @@
+---
+
+- hosts: "nautobot_servers"
+  gather_facts: true
+  become: true
+  become_user: "root"
+
+  tasks:
+    - name: "UPDATE CACHE"
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
+      register: "APTGET"
+    - debug:
+        var: "APTGET"
+
+    - name: "UPDATE ALL PACKAGES TO LATEST"
+      apt:
+        name: "*"
+        state: latest
+      register: "UPDATE"
+      become: true
+    - debug:
+        var: "UPDATE"
+
+    - name: "INSTALL SPECIFIC PACKAGES DEFINED"
+      apt:
+        pkg:
+          - netplan.io
+          - needrestart
+          - resolvconf
+        state: latest
+
+    - name: "CHANGE HOSTNAME"
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname | replace('_', '-') }}"
+      become: true
+
+    - name: Add FQDN to /etc/hosts
+      lineinfile:
+        dest: "/etc/hosts"
+        regexp: '^127\.0\.1\.1'
+        line: "127.0.1.1 {{ inventory_hostname  | replace('_', '-') }} {{ inventory_hostname_short }}"
+        state: "present"
+
+    - name: "CONFIGURE STATIC NETWORKING"
+      copy:
+        src: etc/netplan/50-cloud-init.yaml
+        dest: /etc/netplan/50-cloud-init.yaml
+        owner: root
+        group: root
+        mode: 0644
+      notify:
+        - netplan apply
+      become: true
+
+    - name: Reboot the server if needed
+      reboot:
+        msg: "Reboot initiated by Ansible because of reboot required file."
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: whoami
+      when: reboot_required.stat.exists
+
+    - name: Remove old packages from the cache
+      apt:
+        autoclean: yes
+
+    - name: Remove dependencies that are no longer needed
+      apt:
+        autoremove: yes
+        purge: yes
+
+  handlers:
+    - name: netplan apply
+      command: netplan apply
