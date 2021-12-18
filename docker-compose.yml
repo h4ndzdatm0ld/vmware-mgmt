@@ -21,4 +21,8 @@ services:
       CLONED_VM_NAME: ${CLONED_VM_NAME}
       WORKSTATION_PROJECTS_DIR: ${WORKSTATION_PROJECTS_DIR}
       VM_ID: ${VM_ID}
+      ANSIBLE_USER: ${ANSIBLE_USER}
+      ANSIBLE_SSH_PASSWORD: ${ANSIBLE_SSH_PASSWORD}
+    volumes:
+      - "./:/usr/src/app"
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:cli}

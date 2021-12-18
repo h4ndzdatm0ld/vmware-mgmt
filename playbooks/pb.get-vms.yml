@@ -27,3 +27,32 @@
     - name: "DEBUG: SHOW ME THE AVAILABLE VMs"
       debug:
         var: "VM_INFORMATION"
+
+    - name: "GET ALL VMNET INFOS ON HOST"
+      unix_vmware_desktop_netmgmt:
+        action: infos
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "VM_NET_INFO"
+
+    - name: "DEBUG: SHOW ME THE VMNET INFO"
+      debug:
+        var: "VM_NET_INFO"
+
+        # - name: "Return IP address"
+        #   unix_vmware_desktop_adaptersmgmt:
+        #     target_vm: "VCH0O7H06FRVIDHCVBANPCSN808SCK3I"
+        #     action: "getip"
+        #     api_url: "{{ api_url }}"
+        #     api_port: "{{ api_port }}"
+        #     validate_certs: "{{ validate_certs }}"
+        #     username: "{{ username }}"
+        #     password: "{{ password }}"
+        #   register: "VM_IP_INFO"
+
+        # - name: "DEBUG: SHOW ME THE VM IP INFO"
+        #   debug:
+        #     var: "VM_IP_INFO"

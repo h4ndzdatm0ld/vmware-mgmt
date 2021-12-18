@@ -1,0 +1,78 @@
+---
+
+- hosts: "nautobot_servers"
+  gather_facts: true
+  become: true
+  become_user: "root"
+  roles:
+    - role: mrlesmithjr.netplan
+      become: yes
+      netplan_enabled: true
+      netplan_config_file: /etc/netplan/00-installer-config.yaml
+      netplan_renderer: networkd
+      netplan_configuration:
+        network:
+          version: 2
+          ethernets:
+            ens33:
+              addresses:
+                - "{{ hostvars[inventory_hostname].ansible_host }}/24"
+  tasks:
+    - name: "UPDATE CACHE"
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
+      register: "APTGET"
+    - debug:
+        var: "APTGET"
+
+    - name: "UPDATE ALL PACKAGES TO LATEST"
+      apt:
+        name: "*"
+        state: latest
+      register: "UPDATE"
+      become: true
+    - debug:
+        var: "UPDATE"
+
+    - name: "INSTALL SPECIFIC PACKAGES DEFINED"
+      apt:
+        pkg:
+          - "netplan.io"
+          - "needrestart"
+          - "resolvconf"
+          - "open-vm-tools-desktop"
+          - "fuse"
+        state: "latest"
+
+    - name: "CHECK IF SHARED FOLDER EXISTS"
+      stat:
+        path: "/mnt/hgfs/Pyprogz"
+      register: "PYPROGZ"
+
+    - name: "MOUNT SHARED FOLDER"
+      ansible.builtin.shell:
+        cmd: "sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other"
+      when: "not PYPROGZ.stat.exists"
+
+    - name: "CHANGE HOSTNAME"
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname | replace('_', '-') }}"
+      become: true
+
+    - name: "Add FQDN to /etc/hosts"
+      lineinfile:
+        dest: "/etc/hosts"
+        regexp: '^127\.0\.1\.1'
+        line: "127.0.1.1 {{ inventory_hostname  | replace('_', '-') }} {{ inventory_hostname_short }}"
+        state: "present"
+
+    - name: "REMOVE OLD CACHE"
+      apt:
+        autoclean: true
+
+    - name: "REMOVE OLD DEPENDENCIES"
+      apt:
+        autoremove: true
+        purge: true
