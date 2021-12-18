@@ -29,6 +29,17 @@ Initial run will require -C flag to configure user/password.
 vmrest -c workstationapi-cert.pem -k workstationapi-key.pem
 ```
 
+## Structure
+
+The current home setup involves a VMWare Workstation Pro running on the main workstation machine. There is a Ubuntu 21.01 Server Guest VM that's used as a template. (This is an env variable for machine id) and it's used to quickly build new Guest VM's with all the necessary tools to have an isolated environment ready for development. A mounted, shared folder that stores all the GIT repos is included in 'mnt/hgfz/Pyprogz'. The onboarding playing, `pb.onboard.yml` ensures it's mounted correctly. Also, all the networking is statically assigned after coming up via DHCP, using `netplan`.
+
+This has become very helpful for development of Django that take up multiple ports tied to any given machine and allows me to quickly change from one env to the other without having to shutdown and rebuild to free up ports and IP's when loading Django apps, as well as having a simple DNS entry to quickly access the projects.
+
+The next steps:
+
+- TODO: Update home router with DNS entries of servers.
+- TODO: Add instance into Nautobot.
+
 ## Examples
 
 The goal of this project was to have a quick way to create a simple VM from a local template. The local template is referenced by the ID of the Virtual Machine. This is specified via env variable, `VM_ID`.
@@ -78,6 +89,3 @@ After creation/modifications of roles, playbooks, or other modules are done, bui
 invoke build
 invoke local-install
 ```
-
-Perform tests locally before committing and generating a PR for review.
-# vmware-mgmt

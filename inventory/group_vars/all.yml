@@ -2,3 +2,10 @@
 ansible_ssh_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
 ansible_user: "{{ lookup('env', 'ANSIBLE_USER') }}"
 ansible_become_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
+
+nameservers:
+  - "192.168.4.1"
+  - "192.168.0.1"
+  - "8.8.8.8"
+  - "1.1.1.1"
+gateway: "192.168.4.1"
