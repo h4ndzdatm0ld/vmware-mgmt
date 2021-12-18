@@ -7,4 +7,8 @@ all:
     nautobot_servers:
       hosts:
         nautobot_nvidia:
-          ansible_host: "192.168.4.37"
+          ansible_host: "192.168.4.38"
+        nautobot_aws:
+          ansible_host: "192.168.4.39"
+        nautobot_ipfabric:
+          ansible_host: "192.168.4.40"
