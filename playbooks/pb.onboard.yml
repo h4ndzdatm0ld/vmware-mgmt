@@ -6,10 +6,15 @@
   become_user: "root"
   roles:
     - role: mrlesmithjr.netplan
-      become: yes
+      become: true
       netplan_enabled: true
       netplan_config_file: /etc/netplan/00-installer-config.yaml
       netplan_renderer: networkd
+      netplan_remove_existing: false
+      netplan_packages:
+        - nplan
+        - netplan.io
+      netplan_apply: True
       netplan_configuration:
         network:
           version: 2
@@ -17,7 +22,27 @@
             ens33:
               addresses:
                 - "{{ hostvars[inventory_hostname].ansible_host }}/24"
+              nameservers:
+                addresses:
+                  - 192.168.4.1
+                  - 192.168.2.1
+                  - 8.8.8.8
+                  - 1.1.1.1
+              gateway4: 192.168.4.1
+              optional: true
+              routes:
+                - to: 0.0.0.0/0
+                  via: 192.168.4.1
+                  table: 4
+              routing-policy:
+                - from: 0.0.0.0/0
+                  table: 4
   tasks:
+    - name: "UPDATE NAMESERVER ENTRY"
+      lineinfile:
+        path: "/etc/resolv.conf"
+        line: "nameserver 192.168.4.1"
+
     - name: "UPDATE CACHE"
       apt:
         update_cache: true
@@ -53,8 +78,9 @@
 
     - name: "MOUNT SHARED FOLDER"
       ansible.builtin.shell:
-        cmd: "sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other"
+        cmd: "mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other"
       when: "not PYPROGZ.stat.exists"
+      become: true
 
     - name: "CHANGE HOSTNAME"
       ansible.builtin.hostname:
