@@ -1,0 +1,13 @@
+---
+- name: "UPDATE EDGER ROUTER OS"
+  hosts: "EdgeRouterX"
+  gather_facts: false
+  connection: "network_cli"
+
+  tasks:
+    - name: "UPDATE DNS ENTRY INTO EDGEROUTER OS"
+      community.network.edgeos_config:
+        lines:
+          - "set system static-host-mapping host-name {{ item | replace('_', '-') }} inet {{ hostvars[item].ansible_host }}"
+          - "set system static-host-mapping host-name {{ item | replace('_', '-') }} alias {{ item | replace('_', '-') }} "
+      with_items: "{{ groups['nautobot_servers'] }}"
