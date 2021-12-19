@@ -37,7 +37,6 @@ This has become very helpful for development of Django that take up multiple por
 
 The next steps:
 
-- TODO: Update home router with DNS entries of servers.
 - TODO: Add instance into Nautobot.
 
 ## Examples
