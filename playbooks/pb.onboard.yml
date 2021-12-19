@@ -69,6 +69,7 @@
           - "resolvconf"
           - "open-vm-tools-desktop"
           - "fuse"
+          - "net-tools"
         state: "latest"
 
     - name: "CHECK IF SHARED FOLDER EXISTS"
