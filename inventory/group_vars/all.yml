@@ -2,7 +2,7 @@
 ansible_ssh_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
 ansible_user: "{{ lookup('env', 'ANSIBLE_USER') }}"
 ansible_become_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
-
+shared_media: false
 nameservers:
   - "192.168.4.1"
   - "192.168.0.1"

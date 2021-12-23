@@ -82,14 +82,17 @@
     - name: "CHECK IF SHARED FOLDER EXISTS"
       stat:
         path: "/mnt/hgfs/Pyprogz"
-      when: "'nautobot_servers_workstation' in group_names"
+      when:
+        - "shared_media|bool"
+        - "'servers_workstation' in group_names"
       register: "PYPROGZ"
 
     - name: "MOUNT SHARED FOLDER"
       ansible.builtin.shell:
         cmd: "mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other"
       when:
-        - "'nautobot_servers_workstation' in group_names"
+        - "shared_media|bool"
+        - "'servers_workstation' in group_names"
         - "not PYPROGZ.stat.exists"
       become: true
 

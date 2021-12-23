@@ -30,7 +30,7 @@
           - name: "CrunchyMgmt"
             ip: "{{ hostvars[cloned_vm_name].ansible_host }}"
             netmask: "{{ mgmt_subnet_mask }}"
-          - name: "VM Network"
+          - name: "VM Network"  # This will provide DHCP address
         wait_for_ip_address: "true"
       register: "VM"
     - debug:

@@ -1,25 +1,36 @@
 ---
 all:
-  hosts:
-    devpop:
-      ansible_host: "127.0.0.1"
-    EdgeRouterX:
-      ansible_host: "192.168.0.1"
-      ansible_network_os: "edgeos"
   children:
+    network_devices:
+      hosts:
+        EdgeRouterX:
+          ansible_host: "192.168.0.1"
+          ansible_network_os: "edgeos"
     servers:
       children:
         servers_workstation:
           hosts:
-            nautobot_ipfabric:
-              ansible_host: "192.168.4.44"
+            ipfabric-dev:
+              ansible_host: "192.168.4.137"
+            rundeck:
+              ansible_host: "192.168.4.41"
         servers_esxi:
           hosts:
             nautobot-aws:
               ansible_host: "192.168.100.140"
             nautobot-nvidia:
               ansible_host: "192.168.100.141"
-    aux_esxi_servers:
-      hosts:
-        rundeck:
-          ansible_host: "192.168.4.41"
+            nautobot-training:
+              ansible_host: "192.168.100.142"
+            netbox:
+              ansible_host: "192.168.100.143"
+            nautobot-dev:
+              ansible_host: "192.168.100.220"
+            rundeck-dev:
+              ansible_host: "192.168.100.186"
+        network:
+          hosts:
+            uisp:
+              ansible_host: "192.168.100.248"
+            nautobot:
+              ansible_host: "192.168.100.238"

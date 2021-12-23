@@ -1,8 +1,11 @@
+# docker-compose run cli playbooks/network/pb.edgeos-update.yml -e group_of_interest="servers"
 ---
-- name: "UPDATE EDGER ROUTER OS WITH STATIC DNS ENTRY FOR NAUTOBOT SERVERS"
+- name: "UPDATE EDGER ROUTER OS WITH STATIC DNS ENTRY"
   hosts: "EdgeRouterX"
   gather_facts: false
   connection: "network_cli"
+  vars:
+    group_of_interest: "servers"
 
   tasks:
     - name: "UPDATE DNS ENTRY INTO EDGEROUTER OS"
@@ -10,4 +13,4 @@
         lines:
           - "set system static-host-mapping host-name {{ item | replace('_', '-') }} inet {{ hostvars[item].ansible_host }}"
           - "set system static-host-mapping host-name {{ item | replace('_', '-') }} alias {{ item | replace('_', '-') }} "
-      with_items: "{{ groups['nautobot_servers'] }}"
+      with_items: "{{ groups[group_of_interest] }}"
