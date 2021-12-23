@@ -1,5 +1,5 @@
 # Ansible Workfow for VMWare Management.
-# docker-compose build && docker-compose run cli playbooks/pb.clone-vm.yml -e cloned_vm_name="name of new cloned vm"
+# docker-compose build && docker-compose run cli playbooks/workstation/pb.clone-vm.yml -e cloned_vm_name="name of new cloned vm"
 ---
 - name: "DEPLOY TEMPLATE VM"
   hosts: "localhost"

@@ -1,6 +1,5 @@
 ---
-
-- hosts: "nautobot_servers"
+- hosts: "servers"
   gather_facts: true
   become: true
   become_user: "root"
@@ -8,40 +7,47 @@
     - role: mrlesmithjr.netplan
       become: true
       netplan_enabled: true
-      netplan_config_file: /etc/netplan/00-installer-config.yaml
-      netplan_renderer: networkd
+      netplan_config_file: "/etc/netplan/00-installer-config.yaml"
+      netplan_renderer: "NetworkManager"
       netplan_remove_existing: false
       netplan_packages:
-        - nplan
-        - netplan.io
-      netplan_apply: True
+        - "nplan"
+        - "netplan.io"
+      netplan_apply: true
       netplan_configuration:
         network:
           version: 2
           ethernets:
             ens33:
               addresses:
-                - "{{ hostvars[inventory_hostname].ansible_host }}/24"
+                - "{{ hostvars[inventory_hostname].ansible_host }}/{{ mgmt_subnet_prefix }}"
               nameservers:
                 addresses:
-                  - 192.168.4.1
-                  - 192.168.2.1
-                  - 8.8.8.8
-                  - 1.1.1.1
-              gateway4: 192.168.4.1
+                  - "192.168.4.1"
+                  - "192.168.2.1"
+                  - "192.168.100.1"
+                  - "8.8.8.8"
+                  - "1.1.1.1"
+                search:
+                  - "heshlaw.local"
+              gateway4: "{{ gateway }}"
               optional: true
-              routes:
-                - to: 0.0.0.0/0
-                  via: 192.168.4.1
-                  table: 4
-              routing-policy:
-                - from: 0.0.0.0/0
-                  table: 4
+              # routes:
+              #   - to: 0.0.0.0/0
+              #     via: 192.168.4.1
+              #     on-link: true
+              #   - to: 0.0.0.0/0
+              #     via: 192.168.4.1
+              #     table: 100
+              # routing-policy:
+              #   - from: 192.168.4.0/24
+              #     table: 100
   tasks:
     - name: "UPDATE NAMESERVER ENTRY"
       lineinfile:
         path: "/etc/resolv.conf"
-        line: "nameserver 192.168.4.1"
+        line: "nameserver {{ item }}"
+      with_items: "{{ nameservers }}"
 
     - name: "UPDATE CACHE"
       apt:
@@ -70,17 +76,21 @@
           - "open-vm-tools-desktop"
           - "fuse"
           - "net-tools"
+          - "network-manager"
         state: "latest"
 
     - name: "CHECK IF SHARED FOLDER EXISTS"
       stat:
         path: "/mnt/hgfs/Pyprogz"
+      when: "'nautobot_servers_workstation' in group_names"
       register: "PYPROGZ"
 
     - name: "MOUNT SHARED FOLDER"
       ansible.builtin.shell:
         cmd: "mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other"
-      when: "not PYPROGZ.stat.exists"
+      when:
+        - "'nautobot_servers_workstation' in group_names"
+        - "not PYPROGZ.stat.exists"
       become: true
 
     - name: "CHANGE HOSTNAME"
@@ -103,3 +113,22 @@
       apt:
         autoremove: true
         purge: true
+
+    - name: "CHECK IF REBOOT IS NEEDED"
+      stat:
+        path: "/var/run/reboot-required"
+      register: "reboot_required"
+
+    - name: "RUN NEEDRESTART"
+      command: "needrestart -r a"
+      when: "not reboot_required.stat.exists"
+
+    - name: "REBOOT IF NEEDED"
+      reboot:
+        msg: "Reboot initiated by Ansible because of reboot required file."
+        connect_timeout: 5
+        reboot_timeout: 600
+        pre_reboot_delay: 0
+        post_reboot_delay: 30
+        test_command: "whoami"
+      when: "reboot_required.stat.exists"

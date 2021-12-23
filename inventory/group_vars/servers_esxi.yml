@@ -1,0 +1,4 @@
+---
+gateway: "192.168.100.1"
+mgmt_subnet_mask: "255.255.255.0"
+mgmt_subnet_prefix: "24"

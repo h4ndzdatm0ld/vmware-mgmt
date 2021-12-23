@@ -1,7 +1,7 @@
 # Ansible Workfow for VMWare Management.
-# docker-compose build && docker-compose run cli pb.get-vms.yml
+# docker-compose build && docker-compose run cli playbooks/workstation/pb.get-vms.yml
 ---
-- name: "DEPLOY TEMPLATE VM"
+- name: "GET ALL VMs INFORMATION"
   hosts: "localhost"
   gather_facts: false
   collections:
