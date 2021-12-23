@@ -7,11 +7,19 @@ all:
       ansible_host: "192.168.0.1"
       ansible_network_os: "edgeos"
   children:
-    nautobot_servers:
+    servers:
+      children:
+        servers_workstation:
+          hosts:
+            nautobot_ipfabric:
+              ansible_host: "192.168.4.44"
+        servers_esxi:
+          hosts:
+            nautobot-aws:
+              ansible_host: "192.168.100.140"
+            nautobot-nvidia:
+              ansible_host: "192.168.100.141"
+    aux_esxi_servers:
       hosts:
-        nautobot_nvidia:
-          ansible_host: "192.168.4.38"
-        nautobot_aws:
-          ansible_host: "192.168.4.39"
-        nautobot_ipfabric:
-          ansible_host: "192.168.4.40"
+        rundeck:
+          ansible_host: "192.168.4.41"

@@ -19,6 +19,9 @@ ARG PYPI_PASSWORD
 ENV POETRY_HTTP_BASIC_GITLAB_PASSWORD=${PYPI_PASSWORD}
 # Install production dependencies
 RUN poetry install --no-dev
+# VMWARE Package needs help...
+RUN pip install --upgrade pip setuptools
+RUN pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
 
 ############
 # Unit tests

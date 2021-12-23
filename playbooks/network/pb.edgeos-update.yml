@@ -1,5 +1,5 @@
 ---
-- name: "UPDATE EDGER ROUTER OS"
+- name: "UPDATE EDGER ROUTER OS WITH STATIC DNS ENTRY FOR NAUTOBOT SERVERS"
   hosts: "EdgeRouterX"
   gather_facts: false
   connection: "network_cli"

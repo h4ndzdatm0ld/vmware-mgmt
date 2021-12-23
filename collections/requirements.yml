@@ -3,3 +3,4 @@ collections:
   - "qsypoq.vmware_desktop"
   - "community.general"
   - "community.network"
+  - "vmware.vmware_rest"

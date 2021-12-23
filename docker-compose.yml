@@ -23,6 +23,10 @@ services:
       VM_ID: ${VM_ID}
       ANSIBLE_USER: ${ANSIBLE_USER}
       ANSIBLE_SSH_PASSWORD: ${ANSIBLE_SSH_PASSWORD}
+      VMWARE_HOST: ${VMWARE_HOST}
+      VMWARE_USER: ${VMWARE_USER}
+      VMWARE_PASSWORD: ${VMWARE_PASSWORD}
+      VMWARE_VALIDATE_CERTS: ${VMWARE_VALIDATE_CERTS}
     volumes:
       - "./:/usr/src/app"
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:cli}
