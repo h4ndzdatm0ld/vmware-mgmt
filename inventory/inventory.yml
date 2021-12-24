@@ -28,6 +28,8 @@ all:
               ansible_host: "192.168.100.220"
             rundeck-dev:
               ansible_host: "192.168.100.186"
+            job-runner-01:
+              ansible_host: "192.168.100.187"
         network:
           hosts:
             uisp:
