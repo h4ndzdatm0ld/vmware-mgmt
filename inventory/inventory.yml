@@ -33,6 +33,6 @@ all:
         network:
           hosts:
             uisp:
-              ansible_host: "192.168.100.248"
+              ansible_host: "192.168.100.249"
             nautobot:
               ansible_host: "192.168.100.238"
