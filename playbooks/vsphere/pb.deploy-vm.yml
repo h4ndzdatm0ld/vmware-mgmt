@@ -15,7 +15,7 @@
     template: "Ubuntu-Template"
 
   tasks:
-    - name: "CLONE TEMPLATE VM"
+    - name: "CLONE TEMPLATE VM - PRE-DEFINED IP"
       community.vmware.vmware_guest:
         hostname: "{{ hostname }}"
         username: "{{ username }}"
@@ -33,5 +33,23 @@
           - name: "VM Network"  # This will provide DHCP address
         wait_for_ip_address: "true"
       register: "VM"
+      when: "hostvars[cloned_vm_name] is defined"
+
+    - name: "CLONE TEMPLATE VM - DHCP"
+      community.vmware.vmware_guest:
+        hostname: "{{ hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: "{{ validate_certs }}"
+        name: "{{ cloned_vm_name }}"
+        template: "{{ template }}"
+        datacenter: "{{ datacenter }}"
+        folder: "{{ folder }}"
+        state: "poweredon"
+        networks:
+          - name: "VM Network"  # This will provide DHCP address
+        wait_for_ip_address: "true"
+      register: "VM"
+
     - debug:
         msg: "{{ VM }}"
