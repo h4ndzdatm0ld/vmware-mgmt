@@ -122,9 +122,9 @@
         path: "/var/run/reboot-required"
       register: "reboot_required"
 
-    - name: "RUN NEEDRESTART"
-      command: "needrestart -r a"
-      when: "not reboot_required.stat.exists"
+    # - name: "RUN NEEDRESTART"
+    #   command: "needrestart -r a"
+    #   when: "not reboot_required.stat.exists"
 
     - name: "REBOOT IF NEEDED"
       reboot:

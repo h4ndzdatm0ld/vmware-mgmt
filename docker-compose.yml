@@ -27,6 +27,9 @@ services:
       VMWARE_USER: ${VMWARE_USER}
       VMWARE_PASSWORD: ${VMWARE_PASSWORD}
       VMWARE_VALIDATE_CERTS: ${VMWARE_VALIDATE_CERTS}
+      PRE_SHARED_SECRET: ${PRE_SHARED_SECRET}
+      VPN_PASSWORD: ${VPN_PASSWORD}
+      VPN_USER: ${VPN_USER}
     volumes:
       - "./:/usr/src/app"
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:cli}

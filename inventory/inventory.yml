@@ -12,8 +12,6 @@ all:
           hosts:
             ipfabric-dev:
               ansible_host: "192.168.4.137"
-            rundeck:
-              ansible_host: "192.168.4.41"
         servers_esxi:
           hosts:
             nautobot-aws:
@@ -30,6 +28,10 @@ all:
               ansible_host: "192.168.100.186"
             job-runner-01:
               ansible_host: "192.168.100.187"
+            rundeck:
+              ansible_host: "192.168.100.233"
+            hashicorp-vault:
+              ansible_host: "192.168.100.131"
         network:
           hosts:
             uisp:

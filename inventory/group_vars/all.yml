@@ -11,3 +11,9 @@ nameservers:
   - "1.1.1.1"
 mgmt_subnet_mask: "255.255.255.0"
 mgmt_subnet_prefix: "24"
+
+networks:
+  crunchy_mgmt: "192.168.100.0/24"
+  data_closet: "192.168.2.0/23"
+  office_desk: "192.168.4.0/24"
+ANSIBLE_PERSISTENT_COMMAND_TIMEOUT: 30
