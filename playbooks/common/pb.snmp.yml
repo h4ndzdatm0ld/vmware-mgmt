@@ -1,0 +1,32 @@
+---
+- hosts: "servers"
+  gather_facts: true
+  become: true
+  become_user: "root"
+  var:
+    COMMUNITY: "{{ lookup('env', 'COMMUNITY') }}"
+
+  tasks:
+    - name: "INSTALL SNMP PACKAGES"
+      package:
+        name:
+          - "net-snmp"
+          - "net-snmp-utils"
+        state: "present"
+        lock_timeout: "180"
+      become: true
+
+    - name: "CONFIGURE SNMP v2c COMMUNITY"
+      lineinfile:
+        path: "/etc/snmp/snmpd.conf"
+        regexp: "com2sec notConfigUser  default       public"
+        line: "com2sec notConfigUser  default       {{ COMMUNITY }}"
+        backrefs: true
+      become: true
+
+    - name: "START SNMP SERVICE"
+      service:
+        name: "snmpd"
+        state: "started"
+        enabled: "yes"
+      become: true
