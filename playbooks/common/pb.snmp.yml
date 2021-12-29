@@ -3,30 +3,69 @@
   gather_facts: true
   become: true
   become_user: "root"
-  var:
+  vars:
     COMMUNITY: "{{ lookup('env', 'COMMUNITY') }}"
 
   tasks:
     - name: "INSTALL SNMP PACKAGES"
-      package:
-        name:
-          - "net-snmp"
-          - "net-snmp-utils"
-        state: "present"
-        lock_timeout: "180"
+      apt:
+        pkg:
+          - "snmp"
+          - "snmpd"
+          - "snmp-mibs-downloader"
+        state: "latest"
       become: true
+      register: "INSTALL_SNMP"
+
+    - name: "DOWNLOAD MIBS"
+      ansible.builtin.shell: "download-mibs"
+      become: true
+      register: "DOWNLOAD_MIBS"
+
+    - name: "TRANSLATE MIBS"
+      ansible.builtin.shell: "snmptranslate -Tp"
+      register: "SNMP_MIBS"
+
+    - name: "CONFIGURE SNMP v2c AGENT ADDRESS"
+      lineinfile:
+        path: "/etc/snmp/snmpd.conf"
+        regexp: "agentaddress  127.0.0.1,[::1]"
+        line: "agentAddress udp:161,udp6:[::1]:161"
+        state: "present"
+        backup: "yes"
+      become: true
+      register: "CONFIGURE_SNMP_AGENT"
 
     - name: "CONFIGURE SNMP v2c COMMUNITY"
       lineinfile:
         path: "/etc/snmp/snmpd.conf"
-        regexp: "com2sec notConfigUser  default       public"
-        line: "com2sec notConfigUser  default       {{ COMMUNITY }}"
-        backrefs: true
+        regexp: "^"
+        line: "rocommunity {{ COMMUNITY }} 127.0.0.1"
+        state: "present"
+        backup: "yes"
       become: true
+      register: "CONFIGURE_SNMP_COMMUNITY"
 
     - name: "START SNMP SERVICE"
       service:
         name: "snmpd"
-        state: "started"
+        state: "restarted"
         enabled: "yes"
       become: true
+      register: "START_SNMP"
+
+    - name: "SNMP WALK"
+      ansible.builtin.shell: "snmpwalk -v 2c -c {{ COMMUNITY }} localhost"
+      register: "SNMP_WALK"
+
+      # - name: "DEBUG ALL"
+      #   debug:
+      #     var: "{{ item }}"
+      #   loop:
+      #     - "INSTALL_SNMP"
+      #     - "DOWNLOAD_MIBS"
+      #     - "SNMP_MIBS"
+      #     - "CONFIGURE_SNMP_AGENT"
+      #     - "CONFIGURE_SNMP_COMMUNITY"
+      #     - "START_SNMP"
+      #     - "SNMP_WALK"
