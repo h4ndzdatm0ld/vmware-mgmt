@@ -30,6 +30,7 @@ services:
       PRE_SHARED_SECRET: ${PRE_SHARED_SECRET}
       VPN_PASSWORD: ${VPN_PASSWORD}
       VPN_USER: ${VPN_USER}
+      COMMUNITY: ${COMMUNITY}
     volumes:
       - "./:/usr/src/app"
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:cli}
