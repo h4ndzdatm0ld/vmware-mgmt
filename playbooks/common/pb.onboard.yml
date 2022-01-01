@@ -77,6 +77,8 @@
           - "fuse"
           - "net-tools"
           - "network-manager"
+          - "nfs-common"
+          - "rsync"
         state: "latest"
 
     - name: "CHECK IF SHARED FOLDER EXISTS"
@@ -116,6 +118,17 @@
       apt:
         autoremove: true
         purge: true
+
+    - name: "MOUNT LINUX SHARE FROM TRUENAS"
+      ansible.posix.mount:
+        src: "truenas.heshlaw.local:/mnt/nebuchadnezzar"
+        path: "/mnt/nebuchadnezzar"
+        opts: "rw,sync,hard,intr"
+        state: "mounted"
+        fstype: "nfs"
+      register: "SHARED_MOUNT"
+    - debug:
+        var: "SHARED_MOUNT"
 
     - name: "CHECK IF REBOOT IS NEEDED"
       stat:

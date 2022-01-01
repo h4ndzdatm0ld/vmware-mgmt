@@ -20,3 +20,10 @@
       until: "EXISTING_VMS is not failed"
     - debug:
         msg: "{{ EXISTING_VMS }}"
+
+    - name: "COLLECT INFO ABOUT 1 VM"
+      vmware.vmware_rest.vcenter_vm_info:
+        vm: '{{ EXISTING_VMS.value[0].vm }}'
+      register: "test_vm1_info"
+    - debug:
+        msg: "{{ test_vm1_info }}"

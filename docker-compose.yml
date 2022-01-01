@@ -5,12 +5,13 @@ services:
     build:
       target: test
       context: .
-
   cli:
     build:
       target: cli
       context: .
     network_mode: host # Allow local host access.
+    env_file:
+      - ".env"
     environment:
       ANSIBLE_COLLECTIONS_PATH: /usr/share/ansible/collections
       ANSIBLE_ROLES_PATH: /usr/share/ansible/roles

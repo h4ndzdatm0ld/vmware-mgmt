@@ -1,0 +1,25 @@
+# docker-compose run cli playbooks/common/pb.rsync.yml
+---
+- hosts: "servers"
+  gather_facts: true
+  become: true
+  become_user: "root"
+  vars:
+    mnt: "/mnt/nebuchadnezzar"
+
+  tasks:
+    - name: "CREATE BACKUP DIR"
+      ansible.builtin.file:
+        path: "{{ mnt }}/{{ inventory_hostname }}"
+        state: "directory"
+        mode: "0760"
+      become: true
+
+    - name: "SYNC HOME DIR TO TRUENAS NFS MOUNT"
+      ansible.posix.synchronize:
+        src: "/home/htinoco/"
+        dest: "{{ mnt }}/{{ inventory_hostname }}"
+        recursive: false
+        dirs: "yes"
+      delegate_to: "{{ inventory_hostname }}"
+      become: true

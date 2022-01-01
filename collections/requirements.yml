@@ -4,3 +4,5 @@ collections:
   - "community.general"
   - "community.network"
   - "vmware.vmware_rest"
+  - "ansible.posix"
+  - "networktocode.nautobot"
