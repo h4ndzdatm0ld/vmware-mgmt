@@ -39,7 +39,15 @@
   register: "ip_assignment"
   when: "(item['ip_address'] is defined) and (item['ip_address']|length > 0)"
 
-# Can prob get more details here from community.vmware for specs and append.
+# Get extra details from vmrest collection API
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: '{{ item["moid"] }}'
+  register: "vm_details"
+  ignore_errors: true
+- debug:
+    var: "vm_details"
+
 - name: "CREATE NAUTOBOT VIRTUAL MACHINE OBJECTS"
   networktocode.nautobot.virtual_machine:
     url: "{{ NAUTOBOT_URL }}"
@@ -49,5 +57,8 @@
     status: "Active"
     validate_certs: false
     primary_ip4: "{{ item['ip_address'] }}"
+    memory: "{{ vm_details['value']['memory']['size_MiB'] }}"
+    vcpus: "{{ vm_details['value']['cpu']['count'] }}"
+    disk: "{{ vm_details['value']
   register: "vm_creation"
-  when: "(item['ip_address'] is defined) and (item['ip_address']|length > 0)"
+  when: "(item['ip_address'] is defined) and (item['ip_address']|length > 0) and (vm_details is defined)"
