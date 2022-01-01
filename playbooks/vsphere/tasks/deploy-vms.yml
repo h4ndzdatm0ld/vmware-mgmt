@@ -59,6 +59,5 @@
     primary_ip4: "{{ item['ip_address'] }}"
     memory: "{{ vm_details['value']['memory']['size_MiB'] }}"
     vcpus: "{{ vm_details['value']['cpu']['count'] }}"
-    disk: "{{ vm_details['value']
   register: "vm_creation"
   when: "(item['ip_address'] is defined) and (item['ip_address']|length > 0) and (vm_details is defined)"
