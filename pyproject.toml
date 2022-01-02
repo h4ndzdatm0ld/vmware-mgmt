@@ -39,7 +39,6 @@ ansible = "^4.2.0"
 Jinja2 = "^2.11.2"
 pyvmomi = "^7.0.3"
 aiohttp = "^3.8.1"
-pyntc = "^0.19.0"
 pynautobot = "^1.0.4"
 
 [tool.poetry.dev-dependencies]
