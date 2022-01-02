@@ -2,6 +2,10 @@
 ansible_ssh_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
 ansible_user: "{{ lookup('env', 'ANSIBLE_USER') }}"
 ansible_become_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
+vcenter_hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+vcenter_username: "{{ lookup('env', 'VMWARE_USER') }}"
+vcenter_password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+vcenter_validate_certs: "{{ lookup('env', 'VMWARE_VALIDATE_CERTS') }}"
 shared_media: false
 nameservers:
   - "192.168.4.1"

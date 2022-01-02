@@ -15,14 +15,6 @@
     template: "Ubuntu-Template"
 
   tasks:
-    - name: "SET CONNECTION FACTS"
-      ansible.builtin.set_fact:
-        connection_args:
-          vcenter_hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
-          vcenter_username: "{{ lookup('env', 'VMWARE_USER') }}"
-          vcenter_password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
-          vcenter_validate_certs: "{{ lookup('env', 'VMWARE_VALIDATE_CERTS') }}"
-
     - name: "CLONE TEMPLATE VM - PRE-DEFINED IP"
       community.vmware.vmware_guest:
         hostname: "{{ hostname }}"
