@@ -10,8 +10,6 @@ services:
       target: cli
       context: .
     network_mode: host # Allow local host access.
-    env_file:
-      - ".env"
     environment:
       ANSIBLE_COLLECTIONS_PATH: /usr/share/ansible/collections
       ANSIBLE_ROLES_PATH: /usr/share/ansible/roles
@@ -34,4 +32,4 @@ services:
       COMMUNITY: ${COMMUNITY}
     volumes:
       - "./:/usr/src/app"
-    image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:cli}
+    image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:latest}

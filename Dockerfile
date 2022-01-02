@@ -23,9 +23,6 @@ RUN poetry install --no-dev
 RUN pip install --upgrade pip setuptools
 RUN pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
 
-############
-# Unit tests
-#
 FROM base AS test
 
 # Install full dependencies
@@ -48,11 +45,6 @@ RUN echo 'Running Flake8' && \
     echo 'Running Bandit' && \
     bandit --recursive ./ --configfile .bandit.yml
 
-# RUN pytest -vvv --color yes
-
-# ENV INTEGRATION_TESTS=true
-
-# Run full test suite including integration
 ENTRYPOINT ["echo"]
 
 CMD ["success"]
