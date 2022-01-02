@@ -21,4 +21,4 @@ jobs:
         run: "docker-compose build"
 
       - name: "Docker Push"
-        run: "docker push ${{ secrets.DOCKERHUB_USERNAME }}/vmware-mgmt:cli"
+        run: "docker push ${{ secrets.DOCKERHUB_USERNAME }}/vmware-mgmt"
