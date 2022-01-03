@@ -42,7 +42,7 @@
 # Get extra details from vmrest collection API
 - name: Collect information about a specific VM
   vmware.vmware_rest.vcenter_vm_info:
-    vm: '{{ item["moid"] }}'
+    vm: "{{ item['moid'] }}"
   register: "vm_details"
   ignore_errors: true
 - debug:

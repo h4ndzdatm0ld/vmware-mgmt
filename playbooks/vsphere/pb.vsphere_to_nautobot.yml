@@ -1,5 +1,6 @@
 # Ansible Workfow for VMWare Management.
 # docker-compose build && docker-compose run cli playbooks/vsphere/pb.vsphere_to_nautobot.yml
+# docker run  --network="host" --env-file .env h4ndzdatm0ld/vmware-mgmt playbooks/vsphere/pb.vsphere_to_nautobot.yml
 ---
 - name: "SYNC VMS FROM VSPHERE TO NAUTOBOT"
   hosts: "localhost"

@@ -1,5 +1,6 @@
 # Ansible Workfow for VMWare Management.
 # docker-compose build && docker-compose run cli playbooks/vsphere/pb.get-vcenter-info.yml
+# docker run  --network="host" --env-file .env h4ndzdatm0ld/vmware-mgmt:latest playbooks/vsphere/pb.get-vcenter-info.yml
 ---
 - name: "VCENTER INFORMATION & TESTS"
   hosts: "localhost"
@@ -20,10 +21,3 @@
       until: "EXISTING_VMS is not failed"
     - debug:
         msg: "{{ EXISTING_VMS }}"
-
-    - name: "COLLECT INFO ABOUT 1 VM"
-      vmware.vmware_rest.vcenter_vm_info:
-        vm: '{{ EXISTING_VMS.value[0].vm }}'
-      register: "test_vm1_info"
-    - debug:
-        msg: "{{ test_vm1_info }}"

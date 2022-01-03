@@ -58,7 +58,7 @@ FROM base AS ansible
 
 WORKDIR /usr/src/app
 
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y git sshpass
 
 # Uncomment if using galaxy installs
 # COPY galaxy/requirements.yml galaxy-requirements.yml
@@ -88,6 +88,8 @@ RUN if [ -e roles/requirements.yml ]; then \
 FROM python:3.8.7-slim AS cli
 
 WORKDIR /usr/src/app
+
+RUN apt-get update && apt-get install -y sshpass
 
 COPY --from=base /usr/src/app /usr/src/app
 COPY --from=base /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages

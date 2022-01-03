@@ -1,5 +1,6 @@
 ---
 ansible_ssh_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
+ansible_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
 ansible_user: "{{ lookup('env', 'ANSIBLE_USER') }}"
 ansible_become_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
 
