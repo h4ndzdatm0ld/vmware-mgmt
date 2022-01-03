@@ -8,12 +8,12 @@ all:
           ansible_network_os: "edgeos"
     servers:
       children:
-        servers_workstation:
-          hosts:
-            ipfabric-dev:
-              ansible_host: "192.168.4.137"
+        # servers_workstation:
+        #   hosts:
         servers_esxi:
           hosts:
+            nautobot-ipfabric:
+              ansible_host: "192.168.100.197"
             nautobot-aws:
               ansible_host: "192.168.100.140"
             nautobot-nvidia:
