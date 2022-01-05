@@ -20,14 +20,12 @@ all:
               ansible_host: "192.168.100.141"
             nautobot-training:
               ansible_host: "192.168.100.142"
-            netbox:
-              ansible_host: "192.168.100.143"
             nautobot-dev:
               ansible_host: "192.168.100.220"
             rundeck-dev:
               ansible_host: "192.168.100.186"
             job-runner-01:
-              ansible_host: "192.168.100.187"
+              ansible_host: "192.168.100.166"
             rundeck:
               ansible_host: "192.168.100.233"
             hashicorp-vault:
