@@ -21,7 +21,7 @@ all:
             nautobot-nvidia:
               ansible_host: "192.168.100.141"
             nautobot-training:
-              ansible_host: "192.168.100.142"
+              ansible_host: "192.168.100.158"
             nautobot-dev:
               ansible_host: "192.168.100.220"
             rundeck-dev:
