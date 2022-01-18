@@ -1,5 +1,6 @@
+# docker-compose run cli playbooks/common/pb.onboard.yml 
 ---
-- hosts: "nautobot-nvidia"
+- hosts: "nautobot-vip-tracker"
   gather_facts: true
   become: true
   become_user: "root"

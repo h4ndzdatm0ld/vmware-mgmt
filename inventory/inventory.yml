@@ -12,6 +12,8 @@ all:
         #   hosts:
         servers_esxi:
           hosts:
+            jenkins:
+              ansible_host: "192.168.100.147"
             nautobot-shodan:
               ansible_host: "192.168.100.114"
             nautobot-ipfabric:
@@ -32,6 +34,8 @@ all:
               ansible_host: "192.168.100.233"
             hashicorp-vault:
               ansible_host: "192.168.100.131"
+            nautobot-vip-tracker:
+              ansible_host: "192.168.100.148"
         network:
           hosts:
             uisp:
