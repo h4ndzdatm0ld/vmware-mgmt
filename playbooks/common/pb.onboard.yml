@@ -1,6 +1,6 @@
-# docker-compose run cli playbooks/common/pb.onboard.yml 
+# docker-compose run cli playbooks/common/pb.onboard.yml
 ---
-- hosts: "nautobot-vip-tracker"
+- hosts: "servers_esxi"
   gather_facts: true
   become: true
   become_user: "root"
@@ -75,6 +75,7 @@
           - "net-tools"
           - "network-manager"
           - "nfs-common"
+          - "nfs-kernel-server"
           - "rsync"
         state: "latest"
 
@@ -107,9 +108,9 @@
         line: "127.0.1.1 {{ inventory_hostname  | replace('_', '-') }} {{ inventory_hostname_short }}"
         state: "present"
 
-    - name: "MOUNT LINUX SHARE FROM TRUENAS"
+    - name: "MOUNT LINUX SHARE FROM DEVPOP"
       ansible.posix.mount:
-        src: "truenas.heshlaw.local:/mnt/nebuchadnezzar"
+        src: "devpop.heshlaw.local:/home/htinoco/Dropbox/Nebuchadnezzar"
         path: "/mnt/nebuchadnezzar"
         opts: "rw,sync,hard,intr"
         state: "mounted"
