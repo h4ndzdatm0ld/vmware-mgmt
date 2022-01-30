@@ -5,31 +5,30 @@ FROM python:3.8 as base
 WORKDIR /usr/src/app
 
 # Install poetry for dep management
-RUN pip install -U pip
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+RUN pip install -U pip  && \
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+
 ENV PATH="$PATH:/root/.poetry/bin"
 RUN poetry config virtualenvs.create false
 
 # Install project manifest
 COPY pyproject.toml poetry.lock ./
 
-# Inject credentials for Poetry
-ARG PYPI_USERNAME
-ARG PYPI_PASSWORD
-ENV POETRY_HTTP_BASIC_GITLAB_PASSWORD=${PYPI_PASSWORD}
 # Install production dependencies
-RUN poetry install --no-dev
+RUN poetry install --no-root --no-dev
+
 # VMWARE Package needs help...
-RUN pip install --upgrade pip setuptools
-RUN pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
+RUN pip install --upgrade setuptools  && \
+    pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
 
 FROM base AS test
 
-# Install full dependencies
-RUN poetry install
-
 # Copy in the application code
 COPY . .
+
+# --no-root declares not to install the project package since we're wanting to take advantage of caching dependency installation
+# and the project is copied in and installed after this step
+RUN poetry install --no-interaction --no-ansi --no-root
 
 # Simple tests
 RUN echo 'Running Flake8' && \
@@ -45,10 +44,6 @@ RUN echo 'Running Flake8' && \
     echo 'Running Bandit' && \
     bandit --recursive ./ --configfile .bandit.yml
 
-ENTRYPOINT ["echo"]
-
-CMD ["success"]
-
 #############
 # Ansible Collections
 #
@@ -57,8 +52,6 @@ CMD ["success"]
 FROM base AS ansible
 
 WORKDIR /usr/src/app
-
-RUN apt-get update && apt-get install -y git sshpass
 
 # Uncomment if using galaxy installs
 # COPY galaxy/requirements.yml galaxy-requirements.yml
