@@ -300,3 +300,7 @@ creds.env
 
 # Invoke overrides
 invoke.yml
+
+# Packer
+*.iso
+*.packer.d*

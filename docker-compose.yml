@@ -33,3 +33,17 @@ services:
     volumes:
       - "./:/usr/src/app"
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:latest}
+  packer:
+    build:
+      target: packer
+      context: .
+    working_dir: "/usr/src/app"
+    network_mode: "host" # Allow local host access.
+    environment:
+      PACKER_PLUGIN_PATH: /usr/src/app/packer-build/.packer.d/plugins
+      VMWARE_HOST: ${VMWARE_HOST}
+      VMWARE_USER: ${VMWARE_USER}
+      VMWARE_PASSWORD: ${VMWARE_PASSWORD}
+      VMWARE_VALIDATE_CERTS: ${VMWARE_VALIDATE_CERTS}
+    volumes:
+      - ".:/usr/src/app"
