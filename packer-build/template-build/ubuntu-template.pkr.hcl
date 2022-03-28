@@ -9,7 +9,7 @@ packer {
 }
 
 locals {
-  build_by      = "Built by: HashiCorp Packer ${packer.version}"
+  build_by      = "Built by: Hugo Tinoco ${packer.version}"
   build_date    = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
   build_version = formatdate("YY.MM", timestamp())
   manifest_date = formatdate("YYYY-MM-DD hh:mm:ss", timestamp())
@@ -30,7 +30,7 @@ locals {
 //  BLOCK: source
 //  Defines the builder configuration blocks.
 
-source "vsphere-iso" "linux-ubuntu" {
+source "vsphere-iso" "ubuntu-template" {
 
   // vCenter Server Endpoint Settings and Credentials
   vcenter_server      = var.vsphere_endpoint
@@ -123,22 +123,22 @@ source "vsphere-iso" "linux-ubuntu" {
 //  Defines the builders to run, provisioners, and post-processors.
 
 build {
-  sources = ["source.vsphere-iso.linux-ubuntu"]
+  sources = ["source.vsphere-iso.ubuntu-template"]
 
-  provisioner "ansible" {
-    playbook_file = "${path.cwd}/ansible/main.yml"
-    roles_path    = "${path.cwd}/ansible/roles"
-    ansible_env_vars = [
-      "ANSIBLE_CONFIG=${path.cwd}/ansible/ansible.cfg"
-    ]
-    extra_arguments = [
-      "--extra-vars", "display_skipped_hosts=false",
-      "--extra-vars", "BUILD_USERNAME=${var.build_username}",
-      "--extra-vars", "BUILD_SECRET='${var.build_key}'",
-      "--extra-vars", "ANSIBLE_USERNAME=${var.ansible_username}",
-      "--extra-vars", "ANSIBLE_SECRET='${var.ansible_key}'",
-    ]
-  }
+  # provisioner "ansible" {
+  #   playbook_file = "${path.cwd}/ansible/main.yml"
+  #   roles_path    = "${path.cwd}/ansible/roles"
+  #   ansible_env_vars = [
+  #     "ANSIBLE_CONFIG=${path.cwd}/ansible/ansible.cfg"
+  #   ]
+  #   extra_arguments = [
+  #     "--extra-vars", "display_skipped_hosts=false",
+  #     "--extra-vars", "BUILD_USERNAME=${var.build_username}",
+  #     "--extra-vars", "BUILD_SECRET='${var.build_key}'",
+  #     "--extra-vars", "ANSIBLE_USERNAME=${var.ansible_username}",
+  #     "--extra-vars", "ANSIBLE_SECRET='${var.ansible_key}'",
+  #   ]
+  # }
 
   post-processor "manifest" {
     output     = "${local.manifest_path}${local.manifest_date}.json"

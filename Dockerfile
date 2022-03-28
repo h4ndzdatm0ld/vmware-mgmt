@@ -18,7 +18,7 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root --no-dev
 
 # VMWARE Package needs help...
-RUN pip install --upgrade setuptools  && \
+RUN pip install setuptools  && \
     pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
 
 FROM base AS test
@@ -60,7 +60,7 @@ ENV ANSIBLE_COLLECTIONS_PATH /usr/share/ansible/collections
 ENV ANSIBLE_ROLES_PATH /usr/share/ansible/roles
 
 COPY ./collections/requirements.yml ./collections/requirements.yml
-COPY ./roles/requirements.yml ./roles/requirements.yml
+# COPY ./roles/requirements.yml ./roles/requirements.yml
 
 # The conditional logic is here to cover the case where the user deletes the
 # collection or role requirements file, in the event that they don't need it.
@@ -68,10 +68,6 @@ COPY ./roles/requirements.yml ./roles/requirements.yml
 # add collections.
 RUN if [ -e collections/requirements.yml ]; then \
     ansible-galaxy collection install -r collections/requirements.yml; \
-    fi
-
-RUN if [ -e roles/requirements.yml ]; then \
-    ansible-galaxy install -r roles/requirements.yml; \
     fi
 
 #############
