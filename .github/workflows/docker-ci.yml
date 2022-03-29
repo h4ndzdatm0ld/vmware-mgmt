@@ -3,7 +3,7 @@ name: "CI-Docker-Build"
 
 on: # yamllint disable
   push:
-    branches: ["*"]
+    branches: ["main"]
 
 jobs:
   build:
