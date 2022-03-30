@@ -304,4 +304,3 @@ invoke.yml
 # Packer
 *.iso
 *.packer.d*
-*.auto.pkrvars.hcl

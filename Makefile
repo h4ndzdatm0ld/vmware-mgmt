@@ -8,4 +8,4 @@ ubuntu_vars = $(base_ubuntu_dir)/variables.pkr.hcl
 # Base image to feed into ubuntu jobs
 ubuntu_base:
 	-rm -fr packer-builds/output/*.iso
-	packer build $(base_ubuntu_dir)
+	packer build -var "vsphere_password=$(VMWARE_PASSWORD)" $(base_ubuntu_dir)
