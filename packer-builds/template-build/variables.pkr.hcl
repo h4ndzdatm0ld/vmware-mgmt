@@ -33,7 +33,7 @@ variable "vsphere_insecure_connection" {
 variable "vsphere_datacenter" {
   type        = string
   description = "The name of the target vSphere datacenter. (e.g. 'sfo-w01-dc01')"
-  default = "CrunchyDatacenter"
+  default     = "CrunchyDatacenter"
 }
 
 variable "vsphere_cluster" {
@@ -44,19 +44,19 @@ variable "vsphere_cluster" {
 variable "vsphere_datastore" {
   type        = string
   description = "The name of the target vSphere datastore. (e.g. 'sfo-w01-cl01-vsan01')"
-  default = "Crunchy"
+  default     = "Crunchy"
 }
 
 variable "vsphere_network" {
   type        = string
   description = "The name of the target vSphere network segment. (e.g. 'sfo-w01-dhcp')"
-  default = "CrunchyMgmt"
+  default     = "CrunchyMgmt"
 }
 
 variable "vsphere_folder" {
   type        = string
   description = "The name of the target vSphere cluster. (e.g. 'sfo-w01-fd-templates')"
-  default = "HeshLawCluster"
+  default     = "Packer-Builds"
 }
 
 // Virtual Machine Settings
@@ -106,7 +106,7 @@ variable "vm_guest_os_type" {
 variable "vm_firmware" {
   type        = string
   description = "The virtual machine firmware. (e.g. 'efi-secure'. 'efi', or 'bios')"
-  default     = "efi-secure"
+  default     = "efi"
 }
 
 variable "vm_cdrom_type" {
@@ -197,7 +197,7 @@ variable "common_template_conversion" {
 variable "common_content_library_name" {
   type        = string
   description = "The name of the target vSphere content library, if used. (e.g. 'sfo-w01-cl01-lib01')"
-  default     = null
+  default     = "GeneralContent"
 }
 
 variable "common_content_library_ovf" {
@@ -223,18 +223,18 @@ variable "common_content_library_skip_export" {
 variable "common_iso_datastore" {
   type        = string
   description = "The name of the source vSphere datastore for ISO images. (e.g. 'sfo-w01-cl01-nfs01')"
-  default = "Crunchy"
+  default     = "Crunchy"
 }
 
 variable "data_source_content" {
-  type        = string
+  type    = string
   default = "http"
 }
 
 variable "iso_path" {
   type        = string
   description = "The path on the source vSphere datastore for ISO image. (e.g. 'iso/linux/ubuntu')"
-  default = "packer-build/iso"
+  default     = "ISOs"
 }
 
 variable "iso_file" {
@@ -246,7 +246,7 @@ variable "iso_file" {
 variable "iso_checksum_type" {
   type        = string
   description = "The checksum algorithm used by the vendor. (e.g. 'sha256')"
-  default = "sha256"
+  default     = "sha256"
 }
 
 variable "iso_checksum_value" {
@@ -259,7 +259,7 @@ variable "iso_checksum_value" {
 variable "common_data_source" {
   type        = string
   description = "The provisioning data source. (e.g. 'http' or 'disk')"
-  default = "http"
+  default     = "http"
 }
 
 variable "common_http_ip" {
@@ -297,7 +297,7 @@ variable "common_ip_wait_timeout" {
 variable "common_shutdown_timeout" {
   type        = string
   description = "Time to wait for guest operating system shutdown."
-  default = 10
+  default     = 10
 }
 
 // Communicator Settings and Credentials
@@ -306,13 +306,14 @@ variable "build_username" {
   type        = string
   description = "The username to login to the guest operating system. (e.g. 'rainpole')"
   sensitive   = true
-  default = "ubuntu"
+  default     = "ubuntu"
 }
 
 variable "build_password" {
   type        = string
   description = "The password to login to the guest operating system."
   sensitive   = true
+  default     = "ubuntu"
 }
 
 variable "build_password_encrypted" {
@@ -327,34 +328,10 @@ variable "build_key" {
   sensitive   = true
 }
 
-variable "communicator_proxy_host" {
-  type        = string
-  description = "A SOCKS proxy host to use for SSH connection."
-  default     = null
-}
-
-variable "communicator_proxy_port" {
-  type        = number
-  description = "A port of the SOCKS proxy."
-  default     = null
-}
-
-variable "communicator_proxy_username" {
-  type        = string
-  description = "The optional username to authenticate with the proxy server."
-  default     = null
-}
-
-variable "communicator_proxy_password" {
-  type        = string
-  description = "The optional password to use to authenticate with the proxy server."
-  sensitive   = true
-  default     = null
-}
-
 variable "communicator_port" {
   type        = string
   description = "The port for the communicator protocol."
+  default     = 22
 }
 
 variable "communicator_timeout" {

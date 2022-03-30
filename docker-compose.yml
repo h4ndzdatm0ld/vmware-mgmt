@@ -40,7 +40,7 @@ services:
     working_dir: "/usr/src/app"
     network_mode: "host" # Allow local host access.
     environment:
-      PACKER_PLUGIN_PATH: /usr/src/app/packer-build/.packer.d/plugins
+      PACKER_PLUGIN_PATH: /usr/src/app/packer-builds/.packer.d/plugins
       VMWARE_HOST: ${VMWARE_HOST}
       VMWARE_USER: ${VMWARE_USER}
       VMWARE_PASSWORD: ${VMWARE_PASSWORD}
