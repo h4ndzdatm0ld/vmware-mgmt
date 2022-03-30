@@ -48,8 +48,8 @@ services:
     volumes:
       - ".:/usr/src/app"
   terraform:
-    env_file:
-      - ".env"
+    # env_file:
+    #   - ".env"
     image: "hashicorp/terraform:latest"
     working_dir: "/usr/src/app"
     network_mode: "host"
