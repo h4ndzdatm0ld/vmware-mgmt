@@ -1,0 +1,43 @@
+# Ansible Workfow for VMWare Management.
+# docker-compose build && docker-compose run cli playbooks/workstation/pb.get-vms.yml
+---
+- name: "GET ALL VMs INFORMATION"
+  hosts: "localhost"
+  gather_facts: false
+  collections:
+    - "qsypoq.vmware_desktop"
+  vars:
+    username: "{{ lookup('env', 'WORKSTRATION_USERNAME') }}"
+    password: "{{ lookup('env', 'WORKSTRATION_PASSWORD') }}"
+    api_url: "{{ lookup('env', 'WORKSTATION_URL') | default('https://localhost', True) }}"
+    api_port: "{{ lookup('env', 'WORKSTRATION_PORT') }}"
+    validate_certs: "{{ lookup('env', 'WORKSTRATION_VALIDATE_CERTS') | default('no', True) }}"
+    cloned_vm_name: "{{ lookup('env', 'CLONED_VM_NAME') }}"
+
+  tasks:
+    - name: "GET ALL VIRTUAL MACHINES AVAILABLE"
+      unix_vmware_desktop_vminfos:
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "VM_INFORMATION"
+
+    - name: "DEBUG: SHOW ME THE AVAILABLE VMs"
+      debug:
+        var: "VM_INFORMATION"
+
+    - name: "GET ALL VMNET INFOS ON HOST"
+      unix_vmware_desktop_netmgmt:
+        action: infos
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "VM_NET_INFO"
+
+    - name: "DEBUG: SHOW ME THE VMNET INFO"
+      debug:
+        var: "VM_NET_INFO"

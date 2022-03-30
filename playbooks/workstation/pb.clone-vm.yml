@@ -1,0 +1,93 @@
+# Ansible Workfow for VMWare Management.
+# docker-compose build && docker-compose run cli playbooks/workstation/pb.clone-vm.yml -e cloned_vm_name="name of new cloned vm"
+---
+- name: "DEPLOY TEMPLATE VM"
+  hosts: "localhost"
+  connection: "local"
+  gather_facts: false
+  collections:
+    - "qsypoq.vmware_desktop"
+  vars:
+    username: "{{ lookup('env', 'WORKSTRATION_USERNAME') }}"
+    password: "{{ lookup('env', 'WORKSTRATION_PASSWORD') }}"
+    api_url: "{{ lookup('env', 'WORKSTATION_URL') | default('https://localhost', True) }}"
+    api_port: "{{ lookup('env', 'WORKSTRATION_PORT') }}"
+    validate_certs: "{{ lookup('env', 'WORKSTRATION_VALIDATE_CERTS') | default('no', True) }}"
+    cloned_vm_name: "{{ lookup('env', 'CLONED_VM_NAME') }}"
+    projects_dir: "{{ lookup('env', 'WORKSTATION_PROJECTS_DIR') }}"
+    vm_id: "{{ lookup('env', 'VM_ID') }}"
+
+  tasks:
+    - name: "GET ALL VIRTUAL MACHINES AVAILABLE"
+      unix_vmware_desktop_vminfos:
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "VM_INFORMATION"
+
+    - name: "DEBUG: SHOW ME THE AVAILABLE VMs"
+      debug:
+        var: "VM_INFORMATION"
+
+    - name: "CLONE VM ID: {{ vm_id }}"
+      unix_vmware_desktop_vmmgmt:
+        target_vm: "{{ vm_id }}"
+        action: "clone"
+        name: "{{ cloned_vm_name }}"
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "CLONED_VM"
+
+    - name: "DEBUG: CLONE VM"
+      debug:
+        var: "CLONED_VM"
+
+    - name: "REGISTER THE NEW CLONED VM"
+      unix_vmware_desktop_vmmgmt:
+        name: "{{ cloned_vm_name }}"
+        action: register
+        vmx_path: "{{ projects_dir }}/{{ cloned_vm_name }}/{{ cloned_vm_name }}.vmx"
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "REGISTER_VM"
+
+    - name: "DEBUG: REGISTER VM"
+      debug:
+        var: "REGISTER_VM"
+
+    - name: "GET POWER STATE OF VM-ID: {{ REGISTER_VM['msg']['id'] }}"
+      unix_vmware_desktop_power:
+        target_vm: "{{ REGISTER_VM['msg']['id'] }}"
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "POWER_STATE"
+
+    - name: "DEBUG: POWER STATE VM"
+      debug:
+        var: "POWER_STATE"
+
+    - name: "START UP VM: {{ REGISTER_VM['msg']['id'] }}"
+      unix_vmware_desktop_power:
+        target_vm: "{{ REGISTER_VM['msg']['id'] }}"
+        state: "on"
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "START_VM"
+
+    - name: "DEBUG: START VM: {{ REGISTER_VM['msg']['id'] }}"
+      debug:
+        var: "START_VM"

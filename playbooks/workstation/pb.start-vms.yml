@@ -1,0 +1,41 @@
+# Ansible Workfow for VMWare Management.
+# docker-compose build && docker-compose run cli pb.get-vms.yml
+---
+- name: "DEPLOY TEMPLATE VM"
+  hosts: "localhost"
+  gather_facts: false
+  collections:
+    - "qsypoq.vmware_desktop"
+  vars:
+    username: "{{ lookup('env', 'WORKSTRATION_USERNAME') }}"
+    password: "{{ lookup('env', 'WORKSTRATION_PASSWORD') }}"
+    api_url: "{{ lookup('env', 'WORKSTATION_URL') | default('https://localhost', True) }}"
+    api_port: "{{ lookup('env', 'WORKSTRATION_PORT') }}"
+    validate_certs: "{{ lookup('env', 'WORKSTRATION_VALIDATE_CERTS') | default('no', True) }}"
+    cloned_vm_name: "{{ lookup('env', 'CLONED_VM_NAME') }}"
+
+  tasks:
+    - name: "GET ALL VIRTUAL MACHINES AVAILABLE"
+      unix_vmware_desktop_vminfos:
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      register: "AVAILABLE_VMS"
+    - debug:
+        var: "AVAILABLE_VMS"
+
+    - name: "STARTING UP VM"
+      unix_vmware_desktop_power:
+        target_vm: "{{ item['id'] }}"
+        state: "on"
+        api_url: "{{ api_url }}"
+        api_port: "{{ api_port }}"
+        validate_certs: "{{ validate_certs }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+      with_items: "{{AVAILABLE_VMS['msg']}}"
+      register: "START_VM"
+    - debug:
+        var: "START_VM"

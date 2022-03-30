@@ -1,0 +1,63 @@
+# Create IP Addresses and Deploy Virtual Machines
+---
+- set_fact:
+    vm_name: "{{ item['guest_name'] | lower | replace(' ', '-') }}"
+- name: "CREATE NAUTOBOT VIRTUAL MACHINE OBJECTS"
+  networktocode.nautobot.virtual_machine:
+    url: "{{ NAUTOBOT_URL }}"
+    token: "{{ NAUTOBOT_TOKEN }}"
+    name: "{{ vm_name }}"
+    cluster: "{{ item['cluster'] }}"
+    status: "Active"
+    state: "present"
+    validate_certs: false
+  register: "vm_creation"
+- debug:
+    var: "vm_creation"
+
+- name: "CREATE VM INTERFACE"
+  networktocode.nautobot.vm_interface:
+    url: "{{ NAUTOBOT_URL }}"
+    token: "{{ NAUTOBOT_TOKEN }}"
+    virtual_machine: "{{ vm_name }}"
+    name: "generic-network-adapter"
+    state: "present"
+    validate_certs: false
+    enabled: "yes"
+
+- name: "CREATE AND ASSIGN IP ADDRESS TO VMS"
+  networktocode.nautobot.ip_address:
+    url: "{{ NAUTOBOT_URL }}"
+    token: "{{ NAUTOBOT_TOKEN }}"
+    address: "{{ item['ip_address'] }}"
+    assigned_object:
+      name: "generic-network-adapter"
+      virtual_machine: "{{ vm_name }}"
+    status: "Active"
+    state: "present"
+    validate_certs: false
+  register: "ip_assignment"
+  when: "(item['ip_address'] is defined) and (item['ip_address']|length > 0)"
+
+# Get extra details from vmrest collection API
+- name: Collect information about a specific VM
+  vmware.vmware_rest.vcenter_vm_info:
+    vm: "{{ item['moid'] }}"
+  register: "vm_details"
+  ignore_errors: true
+- debug:
+    var: "vm_details"
+
+- name: "CREATE NAUTOBOT VIRTUAL MACHINE OBJECTS"
+  networktocode.nautobot.virtual_machine:
+    url: "{{ NAUTOBOT_URL }}"
+    token: "{{ NAUTOBOT_TOKEN }}"
+    name: "{{ vm_name }}"
+    state: "present"
+    status: "Active"
+    validate_certs: false
+    primary_ip4: "{{ item['ip_address'] }}"
+    memory: "{{ vm_details['value']['memory']['size_MiB'] }}"
+    vcpus: "{{ vm_details['value']['cpu']['count'] }}"
+  register: "vm_creation"
+  when: "(item['ip_address'] is defined) and (item['ip_address']|length > 0) and (vm_details is defined)"

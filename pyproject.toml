@@ -34,10 +34,13 @@ authors = ["Hugo Tinoco <hugotinoco@icloud.com>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 # NOTE: By default with this spec will go to 2.10
-ansible = "^2.9.12"
+ansible = "^4.2.0"
 # NOTE: Jinja2 has to be explicitly installed in ansible 2.10
 Jinja2 = "^2.11.2"
-pyntc = "^0.0.11"
+pyvmomi = "^7.0.3"
+aiohttp = "^3.8.1"
+pynautobot = "^1.0.4"
+paramiko = "^2.9.1"
 
 [tool.poetry.dev-dependencies]
 ansible-lint = "*"
@@ -46,6 +49,9 @@ bandit = "*"
 pylint = "*"
 pytest = "*"
 yamllint = "*"
+flake8 = "^4.0.1"
+black = "^21.11b1"
+pydocstyle = "^6.1.1"
 
 [tool.pylint.basic]
 # No docstrings required for private methods (Pylint default), or for test_ functions, or for inner Meta classes.

@@ -1,0 +1,51 @@
+# Ansible Workfow for VMWare Management.
+# docker-compose build && docker-compose run cli playbooks/vsphere/pb.vsphere_to_nautobot.yml
+# docker run  --network="host" --env-file .env h4ndzdatm0ld/vmware-mgmt playbooks/vsphere/pb.vsphere_to_nautobot.yml
+---
+- name: "SYNC VMS FROM VSPHERE TO NAUTOBOT"
+  hosts: "localhost"
+  gather_facts: false
+  connection: "local"
+  collections:
+    - "vmware.vmware_rest"
+    - "networktocode.nautobot"
+  vars:
+    NAUTOBOT_URL: "{{ lookup('env', 'NAUTOBOT_URL') }}"
+    NAUTOBOT_TOKEN: "{{ lookup('env', 'NAUTOBOT_TOKEN') }}"
+    vcenter_hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+    vcenter_username: "{{ lookup('env', 'VMWARE_USER') }}"
+    vcenter_password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+
+  tasks:
+    - name: "GET ALL CLUSTERS"
+      vmware.vmware_rest.vcenter_cluster_info:
+      register: "clusters"
+    - name: "LIST ALL CLUSTERS"
+      debug:
+        var: "clusters"
+
+    - name: "CREATE CLUSTERS"
+      networktocode.nautobot.cluster:
+        url: "{{ NAUTOBOT_URL }}"
+        token: "{{ NAUTOBOT_TOKEN }}"
+        name: "{{ item['name'] }}"
+        state: "present"
+        cluster_type: "VMware vSphere"
+        validate_certs: false
+      loop: "{{ clusters['value'] }}"
+
+    - name: "GET ALL VIRTUAL MACHINES FROM VCENTER"
+      community.vmware.vmware_vm_info:
+        hostname: "{{ vcenter_hostname }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+      register: "vminfo"
+    - name: "LIST ALL VMS"
+      debug:
+        var: "vminfo.virtual_machines"
+
+    - name: "DEPLOY VIRTUAL MACHINES"
+      include_tasks: "tasks/deploy-vms.yml"
+      loop: "{{ vminfo.virtual_machines }}"
+      loop_control:
+        loop_var: "item"

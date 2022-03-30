@@ -1,0 +1,51 @@
+# Ansible Workfow for VMWare Management.
+# docker-compose build && docker-compose run cli playbooks/vsphere/pb.configure-vsphere.yml
+---
+- name: "VCENTER CONFIGURATION"
+  hosts: "localhost"
+  gather_facts: false
+  collections:
+    - "vmware.vmware_rest"
+
+  tasks:
+    - name: "UPDATE NTP"
+      vmware.vmware_rest.appliance_ntp:
+        servers:
+          - "time.google.com"
+
+    - name: "TEST NTP"
+      vmware.vmware_rest.appliance_ntp:
+        state: "test"
+        servers:
+          - "time.google.com"
+      register: "result"
+    - debug:
+        msg: "{{ result }}"
+
+    - name: "CHECK HOSTNAME OF VCENTER"
+      vmware.vmware_rest.appliance_networking_dns_hostname:
+        state: "test"
+        name: "vcenter.heshlaw.local"
+      register: "result"
+    - debug:
+        msg: "{{ result }}"
+
+    - name: "SET DNS"
+      vmware.vmware_rest.appliance_networking_dns_servers:
+        servers:
+          - "192.168.4.1"
+          - "192.168.2.1"
+          - "192.168.0.1"
+          - "8.8.8.8"
+        mode: "is_static"
+        state: "set"
+      register: "result"
+
+    - name: "TEST DNS"
+      vmware.vmware_rest.appliance_networking_dns_servers:
+        state: "test"
+        servers:
+          - "google.com"
+      register: "result"
+    - debug:
+        msg: "{{ result }}"

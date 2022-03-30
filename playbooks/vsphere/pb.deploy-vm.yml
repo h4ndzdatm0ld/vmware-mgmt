@@ -1,0 +1,55 @@
+# Ansible Workfow for VMWare Management.
+# docker-compose build
+# docker-compose run cli playbooks/vsphere/pb.deploy-vm.yml -e cloned_vm_name="cloned_vm_name"
+---
+- name: "VCENTER INFORMATION & TESTS"
+  hosts: "localhost"
+  gather_facts: false
+  vars:
+    hostname: "{{ lookup('env', 'VMWARE_HOST') }}"
+    username: "{{ lookup('env', 'VMWARE_USER') }}"
+    password: "{{ lookup('env', 'VMWARE_PASSWORD') }}"
+    validate_certs: "{{ lookup('env', 'VMWARE_VALIDATE_CERTS') }}"
+    datacenter: "CrunchyDatacenter"
+    folder: "Nautobot Plugins"
+    template: "ubuntu-template"
+
+  tasks:
+    - name: "CLONE TEMPLATE VM - PRE-DEFINED IP"
+      community.vmware.vmware_guest:
+        hostname: "{{ hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: "{{ validate_certs }}"
+        name: "{{ cloned_vm_name }}"
+        template: "{{ template }}"
+        datacenter: "{{ datacenter }}"
+        folder: "{{ folder }}"
+        state: "poweredon"
+        networks:
+          - name: "CrunchyMgmt"
+            ip: "{{ hostvars[cloned_vm_name].ansible_host }}"
+            netmask: "{{ mgmt_subnet_mask }}"
+          - name: "VM Network"  # This will provide DHCP address
+        wait_for_ip_address: "true"
+      register: "VM"
+      when: "hostvars[cloned_vm_name] is defined"
+
+    - name: "CLONE TEMPLATE VM - DHCP"
+      community.vmware.vmware_guest:
+        hostname: "{{ hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        validate_certs: "{{ validate_certs }}"
+        name: "{{ cloned_vm_name }}"
+        template: "{{ template }}"
+        datacenter: "{{ datacenter }}"
+        folder: "{{ folder }}"
+        state: "poweredon"
+        networks:
+          - name: "VM Network"  # This will provide DHCP address
+        wait_for_ip_address: "true"
+      register: "VM"
+
+    - debug:
+        msg: "{{ VM }}"

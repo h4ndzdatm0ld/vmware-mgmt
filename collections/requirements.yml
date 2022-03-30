@@ -1,3 +1,8 @@
 ---
 collections:
-  # TODO: Need to add a cookie cutter prompt for the vendor specific modules
+  - "qsypoq.vmware_desktop"
+  - "community.general"
+  - "community.network"
+  - "vmware.vmware_rest"
+  - "ansible.posix"
+  - "networktocode.nautobot"

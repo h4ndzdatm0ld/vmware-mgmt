@@ -1,0 +1,120 @@
+# docker-compose run cli playbooks/common/pb.onboard.yml
+---
+- hosts: "servers_esxi"
+  gather_facts: true
+  become: true
+  become_user: "root"
+  roles:
+    - role: mrlesmithjr.netplan
+      become: true
+      netplan_enabled: true
+      netplan_config_file: "/etc/netplan/00-installer-config.yaml"
+      netplan_renderer: "NetworkManager"
+      netplan_remove_existing: false
+      netplan_packages:
+        - "nplan"
+        - "netplan.io"
+      netplan_apply: true
+      netplan_configuration:
+        network:
+          version: 2
+          ethernets:
+            ens160:
+              addresses:
+                - "{{ hostvars[inventory_hostname].ansible_host }}/{{ mgmt_subnet_prefix }}"
+              nameservers:
+                addresses:
+                  - "192.168.4.1"
+                  - "192.168.2.1"
+                  - "192.168.100.1"
+                  - "8.8.8.8"
+                  - "1.1.1.1"
+                search:
+                  - "heshlaw.local"
+              gateway4: "{{ gateway }}"
+              routes:
+                - to: 0.0.0.0/0
+                  via: 192.168.100.1
+                  table: 100
+              routing-policy:
+                - from: 192.168.100.0/24
+                  table: 100
+  tasks:
+    - name: "UPDATE NAMESERVER ENTRY"
+      lineinfile:
+        path: "/etc/resolv.conf"
+        line: "nameserver {{ item }}"
+      with_items: "{{ nameservers }}"
+
+    - name: "UPDATE CACHE"
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
+      register: "APTGET"
+    - debug:
+        var: "APTGET"
+
+    - name: "UPDATE ALL PACKAGES TO LATEST"
+      apt:
+        name: "*"
+        state: latest
+      register: "UPDATE"
+      become: true
+    - debug:
+        var: "UPDATE"
+
+    - name: "INSTALL SPECIFIC PACKAGES DEFINED"
+      apt:
+        pkg:
+          - "netplan.io"
+          - "needrestart"
+          - "resolvconf"
+          - "open-vm-tools-desktop"
+          - "fuse"
+          - "net-tools"
+          - "network-manager"
+          - "nfs-common"
+          - "nfs-kernel-server"
+          - "rsync"
+        state: "latest"
+
+    - name: "CHECK IF SHARED FOLDER EXISTS"
+      stat:
+        path: "/mnt/hgfs/Pyprogz"
+      when:
+        - "shared_media|bool"
+        - "'servers_workstation' in group_names"
+      register: "PYPROGZ"
+
+    - name: "MOUNT SHARED FOLDER"
+      ansible.builtin.shell:
+        cmd: "mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other"
+      when:
+        - "shared_media|bool"
+        - "'servers_workstation' in group_names"
+        - "not PYPROGZ.stat.exists"
+      become: true
+
+    - name: "CHANGE HOSTNAME"
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname | replace('_', '-') }}"
+      become: true
+
+    - name: "Add FQDN to /etc/hosts"
+      lineinfile:
+        dest: "/etc/hosts"
+        regexp: '^127\.0\.1\.1'
+        line: "127.0.1.1 {{ inventory_hostname  | replace('_', '-') }} {{ inventory_hostname_short }}"
+        state: "present"
+
+    - name: "MOUNT LINUX SHARE FROM DEVPOP"
+      ansible.posix.mount:
+        src: "devpop.heshlaw.local:/home/htinoco/Dropbox/Nebuchadnezzar"
+        path: "/mnt/nebuchadnezzar"
+        opts: "rw,sync,hard,intr"
+        state: "mounted"
+        fstype: "nfs"
+      register: "SHARED_MOUNT"
+    - debug:
+        var: "SHARED_MOUNT"

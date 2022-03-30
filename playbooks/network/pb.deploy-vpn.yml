@@ -1,0 +1,109 @@
+# docker-compose run cli playbooks/network/pb.deploy-vpn.yml
+---
+- name: "UPDATE EDGER ROUTER WITH L2TP OVER IPSEC VPN SERVER"
+  hosts: "EdgeRouterX"
+  gather_facts: false
+  connection: "network_cli"
+  vars:
+    VPN_USER: "{{ lookup('env', 'VPN_USER') }}"
+    VPN_PASSWORD: "{{ lookup('env', 'VPN_PASSWORD') }}"
+    PRE_SHARED_SECRET: "{{ lookup('env', 'PRE_SHARED_SECRET') }}"
+
+  tasks:
+    - name: "COLLECT FACTS"
+      community.network.edgeos_facts:
+        gather_subset: all
+
+    - name: "DEBUG FACTS"
+      debug:
+        var: "{{ item }}"
+      loop:
+        - "ansible_net_commits"
+        - "ansible_net_config"
+        - "ansible_net_gather_subset"
+        - "ansible_net_hostname"
+        - "ansible_net_model"
+        - "ansible_net_neighbors"
+        - "ansible_net_serialnum"
+        - "ansible_net_version"
+
+    - name: "SHOW ETH0 && ETH1"
+      community.network.edgeos_command:
+        commands: "show interfaces ethernet {{ item }}"
+      loop:
+        - "eth0"
+        - "eth1"
+      register: "INTERFACES"
+    - debug:
+        var: "INTERFACES"
+
+    - name: "SET FIREWALL RULES"
+      community.network.edgeos_config:
+        lines:
+          # - "set firewall group port-group vpn_udp_ports description 'VPN Port Group'"
+          # - "set firewall group port-group vpn_udp_ports port 500"
+          # - "set firewall group port-group vpn_udp_ports port 4500"
+          # - "set firewall group port-group vpn_udp_ports port 1701"
+          - "set firewall name WAN_LOCAL rule 30 action accept"
+          - "set firewall name WAN_LOCAL rule 30 description ike"
+          - "set firewall name WAN_LOCAL rule 30 destination port 500"
+          - "set firewall name WAN_LOCAL rule 30 log enable"
+          - "set firewall name WAN_LOCAL rule 30 protocol udp"
+          # - "set firewall name WAN_LOCAL rule 30 destination group port-group vpn_udp_ports"
+          - "set firewall name WAN_LOCAL rule 40 action accept"
+          - "set firewall name WAN_LOCAL rule 40 description esp"
+          - "set firewall name WAN_LOCAL rule 40 log enable"
+          - "set firewall name WAN_LOCAL rule 40 protocol esp"
+          # - "set firewall name WAN_LOCAL rule 40 destination group port-group vpn_udp_ports"
+          - "set firewall name WAN_LOCAL rule 50 action accept"
+          - "set firewall name WAN_LOCAL rule 50 description nat-t"
+          - "set firewall name WAN_LOCAL rule 50 destination port 4500"
+          - "set firewall name WAN_LOCAL rule 50 log enable"
+          - "set firewall name WAN_LOCAL rule 50 protocol udp"
+          # - "set firewall name WAN_LOCAL rule 50 destination group port-group vpn_udp_ports"
+          - "set firewall name WAN_LOCAL rule 60 description l2tp"
+          - "set firewall name WAN_LOCAL rule 60 destination port 1701"
+          - "set firewall name WAN_LOCAL rule 60 ipsec match-ipsec"
+          - "set firewall name WAN_LOCAL rule 60 log enable"
+          - "set firewall name WAN_LOCAL rule 60 protocol udp"
+          # - "set firewall name WAN_LOCAL rule 60 destination group port-group vpn_udp_ports"
+          - "set system offload ipsec enable"
+      ignore_errors: true
+
+    - name: "SHOW FIREWALL CONFIGURATION: WAN_LOCAL"
+      community.network.edgeos_command:
+        commands: "show firewall name WAN_LOCAL"
+      register: "FIREWALL_RULES"
+    - debug:
+        var: "FIREWALL_RULES"
+
+    - name: "SET WAN INTERFACE && INTERNAL NET SPACE"
+      community.network.edgeos_config:
+        lines:
+          - "set vpn ipsec ipsec-interfaces interface eth0"
+          - "set vpn ipsec nat-networks allowed-network {{ networks['crunchy_mgmt'] }}"
+          - "set vpn ipsec nat-networks allowed-network {{ networks['office_desk'] }}"
+          - "set vpn ipsec nat-traversal enable"
+
+    - name: "CONFIGURE L2TP"
+      community.network.edgeos_config:
+        lines:
+          - "set vpn l2tp remote-access authentication local-users username {{ VPN_USER }} password {{ VPN_PASSWORD }}"
+          - "set vpn l2tp remote-access authentication mode local"
+          - "set vpn l2tp remote-access client-ip-pool start {{ vpn_pool['start'] }}"
+          - "set vpn l2tp remote-access client-ip-pool stop {{ vpn_pool['end'] }}"
+          - "set vpn l2tp remote-access dhcp-interface eth0"
+          - "set vpn l2tp remote-access ipsec-settings authentication mode pre-shared-secret"
+          - "set vpn l2tp remote-access ipsec-settings authentication pre-shared-secret {{ PRE_SHARED_SECRET }}"
+          - "set vpn l2tp remote-access ipsec-settings ike-lifetime 3600"
+          - "set vpn l2tp remote-access mtu 1420"
+
+    - name: "SETTING CLIENT DNS SERVERS"
+      community.network.edgeos_config:
+        lines:
+          - "set vpn l2tp remote-access dns-servers server-{{ ansible_loop.index }} {{ item }}"
+      loop:
+        - "192.168.100.1"
+        - "8.8.8.8"
+      loop_control:
+        extended: "yes"
