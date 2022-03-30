@@ -14,16 +14,12 @@ all:
           hosts:
             jenkins:
               ansible_host: "192.168.100.147"
-            nautobot-shodan:
-              ansible_host: "192.168.100.114"
             nautobot-ipfabric:
               ansible_host: "192.168.100.197"
             nautobot-aws:
               ansible_host: "192.168.100.140"
             nautobot-nvidia:
               ansible_host: "192.168.100.141"
-            nautobot-training:
-              ansible_host: "192.168.100.158"
             nautobot-dev:
               ansible_host: "192.168.100.220"
             rundeck-dev:
@@ -34,8 +30,6 @@ all:
               ansible_host: "192.168.100.233"
             hashicorp-vault:
               ansible_host: "192.168.100.131"
-            nautobot-vip-tracker:
-              ansible_host: "192.168.100.148"
         network:
           hosts:
             uisp:
