@@ -191,7 +191,7 @@ variable "common_remove_cdrom" {
 variable "common_template_conversion" {
   type        = bool
   description = "Convert the virtual machine to template. Must be 'false' for content library."
-  default     = false
+  default     = true
 }
 
 variable "common_content_library_name" {
@@ -203,13 +203,13 @@ variable "common_content_library_name" {
 variable "common_content_library_ovf" {
   type        = bool
   description = "Export to content library as an OVF template."
-  default     = true
+  default     = false
 }
 
 variable "common_content_library_destroy" {
   type        = bool
   description = "Delete the virtual machine after exporting to the content library."
-  default     = true
+  default     = false
 }
 
 variable "common_content_library_skip_export" {

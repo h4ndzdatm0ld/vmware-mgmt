@@ -4,13 +4,13 @@
       "name": "ubuntu-template",
       "builder_type": "vsphere-iso",
       "files": null,
-      "artifact_id": "linux-ubuntu-21.10-v22.03",
-      "packer_run_uuid": "34e6556c-c949-ad88-1a38-9cd93d577f65",
+      "artifact_id": "template-linux-ubuntu-21.10-v22.04",
+      "packer_run_uuid": "ecbd6833-5e3a-448d-e6d1-4ea6d4f40469",
       "custom_data": {
         "ansible_username": "ubuntu",
-        "build_date": "2022-03-30 06:02 UTC",
+        "build_date": "2022-04-09 22:35 UTC",
         "build_username": "ubuntu",
-        "build_version": "22.03",
+        "build_version": "22.04",
         "common_vm_version": "12",
         "vm_cpu_cores": "1",
         "vm_cpu_sockets": "2",
@@ -29,5 +29,5 @@
       }
     }
   ],
-  "last_run_uuid": "34e6556c-c949-ad88-1a38-9cd93d577f65"
+  "last_run_uuid": "ecbd6833-5e3a-448d-e6d1-4ea6d4f40469"
 }

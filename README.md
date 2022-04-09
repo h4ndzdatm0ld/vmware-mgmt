@@ -1,6 +1,6 @@
-# Ansible Project: `VMWare Mgmt`
+# VMWare Mgmt
 
-VMWare Management with Ansible
+VMWare Management with Ansible, Packer and Terraform
 
 Personal project used to manage my local VMWare Workstation Pro & ESXI/vSphere instances. Majority of the documentation here is specific to my home network.
 
@@ -12,14 +12,6 @@ Personal project used to manage my local VMWare Workstation Pro & ESXI/vSphere i
 
 - "qsypoq.vmware_desktop"
 - "vmware.vmware_rest"
-
----
-
-## Project features
-
-- [Roles](roles/README.md)
-- [Modules](plugins/modules/README.md)
-- [Filters](plugins/filters/README.md)
 
 ---
 ## General
@@ -55,7 +47,6 @@ This PB connects to the edge-router and loops through a specified group and sets
 ## vSphere Playbooks
 The local env has an ESXI Server with vSphere provisioned. The Ansible Collections are more mature and robust and provide an incredible amount of flexibility and customization. This is the preferred method when deploying new VM's in my env.
 
-
 ### Deploying a new template
 
 Our SoT is our inventory file at the moment. Create a new entry under the `servers_esxi` group. It must include a hostname and `ansible_host` ip address. These values are required in the playbook.
@@ -73,6 +64,19 @@ Variables that must be defined and can be overridden with `extra_vars`
 
 After the playbook has been deployed, run the `common` playbook, `pb.onboard.yml` to update all the necessary items.
 
+## Packer Build
+
+Export the password for vSphere
+
+```bash
+export VMWARE_PASSWORD=....
+```
+
+Call the MAKE target to execute the packer build
+
+```bash
+make ubuntu_base
+```
 
 ## vMware Workstation Pro Playbooks
 Ensure that the VMWARE API is running.
@@ -95,9 +99,6 @@ Included in template:
     - Python3
     - Pip
     
-The next steps:
-
-- TODO: Add instance into Nautobot.
 
 ### Examples
 
@@ -128,24 +129,3 @@ export ansible_user=...[STANDARD ANSIBLE]
 
 `WORKSTATION_PROJECT_DIR` must match the default location for Virtual Machines in Workstation Env.
 ![VM Location](docs/default_location.png)
-
-## Testing
-
-For testing guidelines explanation see [Testing](tests/README.md)
-
----
-
-## Development and Contribution Guidelines
-
-It is a standard Ansible Project. So best practices are found [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html).
-
-Steps:
-
-### Test project
-
-After creation/modifications of roles, playbooks, or other modules are done, build and install the collection locally.
-
-```shell
-invoke build
-invoke local-install
-```

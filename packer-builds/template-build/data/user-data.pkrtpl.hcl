@@ -37,6 +37,7 @@ autoinstall:
         - nfs-common
         - nfs-kernel-server
         - rsync
+        - tree
     storage:
         layout:
             name: direct

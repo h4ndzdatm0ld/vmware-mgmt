@@ -46,7 +46,7 @@ source "vsphere-iso" "ubuntu-template" {
 
   // Virtual Machine Settings
   guest_os_type        = var.vm_guest_os_type
-  vm_name              = "${var.vm_guest_os_family}-${var.vm_guest_os_name}-${var.vm_guest_os_version}-v${local.build_version}"
+  vm_name              = "template-${var.vm_guest_os_family}-${var.vm_guest_os_name}-${var.vm_guest_os_version}-v${local.build_version}"
   firmware             = var.vm_firmware
   CPUs                 = var.vm_cpu_sockets
   cpu_cores            = var.vm_cpu_cores
@@ -103,16 +103,16 @@ source "vsphere-iso" "ubuntu-template" {
 
   // Template and Content Library Settings
   convert_to_template = var.common_template_conversion
-  dynamic "content_library_destination" {
-    for_each = var.common_content_library_name != null ? [1] : []
-    content {
-      library     = var.common_content_library_name
-      description = "Version: v${local.build_version}\nBuilt on: ${local.build_date}\n${local.build_by}"
-      ovf         = var.common_content_library_ovf
-      destroy     = var.common_content_library_destroy
-      skip_import = var.common_content_library_skip_export
-    }
-  }
+  # dynamic "content_library_destination" {
+  #   for_each = var.common_content_library_name != null ? [1] : []
+  #   content {
+  #     library     = var.common_content_library_name
+  #     description = "Version: v${local.build_version}\nBuilt on: ${local.build_date}\n${local.build_by}"
+  #     ovf         = var.common_content_library_ovf
+  #     destroy     = var.common_content_library_destroy
+  #     skip_import = var.common_content_library_skip_export
+  #   }
+  # }
 }
 
 //  BLOCK: build
