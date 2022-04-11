@@ -9,4 +9,3 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsbDDVfMnnURRZ9VjL/Hu/Pfqq7XRIjVP6qh
 sudo chmod 600 /home/htinoco/.ssh/authorized_keys
 sudo chown -R htinoco:htinoco /home/htinoco/.ssh
 sudo ssh-keygen -A
-sudo usermod --shell /bin/bash htinoco

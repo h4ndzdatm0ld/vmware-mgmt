@@ -60,4 +60,3 @@ vsphere_cluster             = "HeshLawCluster"
 vsphere_endpoint            = "vcenter.heshlaw.local"
 vsphere_username            = "administrator@heshlaw.local"
 vsphere_insecure_connection = true
-
