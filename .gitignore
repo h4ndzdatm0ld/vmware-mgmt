@@ -115,6 +115,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.source-env
 
 # Spyder project settings
 .spyderproject
@@ -304,8 +305,7 @@ invoke.yml
 # Packer
 *.iso
 *.packer.d*
-
-
+packer-builds/manifests/*.json
 # Terraform
 
 # Local .terraform directories

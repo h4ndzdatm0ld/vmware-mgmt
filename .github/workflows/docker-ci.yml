@@ -7,7 +7,7 @@ on: # yamllint disable
 
 jobs:
   build:
-    name: "Login to Docker Hub"
+    name: "Publish to Docker Registry"
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
