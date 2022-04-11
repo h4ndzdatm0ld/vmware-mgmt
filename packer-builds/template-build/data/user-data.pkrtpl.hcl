@@ -25,8 +25,9 @@ autoinstall:
       - default
       - name: htinoco
         passwd: "$6$PoKVLFtelyThmfC9$NLEjyW52ZB1fnfzUi4G1x2w7y6oDmgftAqUUFqR4Hkl10s2EojwlguAEBs55i8qaj8OCOZhp8nb5KGJuFGmQF0"
+        hashed_passwd: "$6$PoKVLFtelyThmfC9$NLEjyW52ZB1fnfzUi4G1x2w7y6oDmgftAqUUFqR4Hkl10s2EojwlguAEBs55i8qaj8OCOZhp8nb5KGJuFGmQF0"
         sudo: ALL=(ALL) NOPASSWD:ALL
-        groups: sudo, users, admin
+        groups: sudo
         lock_passwd: true
         ssh_pwauth: True
         ssh_import_id: None
