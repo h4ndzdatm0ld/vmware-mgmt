@@ -126,7 +126,7 @@ build {
     environment_vars = [
       "BUILD_USERNAME=${var.build_username}",
     ]
-    scripts           = ["${abspath(path.root)}/scripts/setup.sh", "${abspath(path.root)}/scripts/docker.sh", "${abspath(path.root)}/scripts/docker-compose.sh", "${abspath(path.root)}/scripts/python-utils.sh"]
+    scripts           = ["${abspath(path.root)}/scripts/user.sh", "${abspath(path.root)}/scripts/cleanup-root.sh", "${abspath(path.root)}/scripts/iac.sh", "${abspath(path.root)}/scripts/ssh.sh", "${abspath(path.root)}/scripts/setup.sh", "${abspath(path.root)}/scripts/docker.sh", "${abspath(path.root)}/scripts/docker-compose.sh", "${abspath(path.root)}/scripts/python-utils.sh", "${abspath(path.root)}/scripts/omzsh.sh"]
     expect_disconnect = true
   }
   # provisioner "ansible" {

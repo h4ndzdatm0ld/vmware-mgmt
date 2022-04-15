@@ -14,12 +14,12 @@ vm_guest_os_type = "ubuntu64Guest"
 // Virtual Machine Hardware Settings
 vm_firmware              = "bios"
 vm_cdrom_type            = "sata"
-vm_cpu_sockets           = 2
+vm_cpu_sockets           = 6
 vm_cpu_cores             = 1
 vm_cpu_hot_add           = false
-vm_mem_size              = 4096
+vm_mem_size              = 6144
 vm_mem_hot_add           = false
-vm_disk_size             = 40960
+vm_disk_size             = 50960
 vm_disk_controller_type  = ["pvscsi"]
 vm_disk_thin_provisioned = true
 vm_network_card          = "vmxnet3"
@@ -60,4 +60,3 @@ vsphere_cluster             = "HeshLawCluster"
 vsphere_endpoint            = "vcenter.heshlaw.local"
 vsphere_username            = "administrator@heshlaw.local"
 vsphere_insecure_connection = true
-

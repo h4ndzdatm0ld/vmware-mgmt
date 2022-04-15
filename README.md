@@ -6,33 +6,33 @@ Personal project used to manage my local VMWare Workstation Pro & ESXI/vSphere i
 
 ## Requirements
 
-- Ansible >= 2.9
-
-**Collections:**
-
-- "qsypoq.vmware_desktop"
-- "vmware.vmware_rest"
+- Docker
+- Docker-Compose
 
 ---
 ## General
-The folder structure for the playbooks, reside under `playbooks' and follow the pattern based on env, either `workstation` or `vsphere`.
+The folder structure for the playbooks, reside under `playbooks` and follow the pattern based on env, either `workstation` or `vsphere`.
 
 ```bash
-➜  playbooks git:(vsphere) ✗ tree
-.
-├── common
-│   └── pb.onboard.yml
-├── network
-│   └── pb.edgeos-update.yml
-├── vsphere
-│   ├── pb.deploy-vm.yml
-│   └── pb.get-vcenter-info.yml
-└── workstation
-    ├── pb.clone-vm.yml
-    ├── pb.get-vms.yml
-    └── pb.start-vms.yml
-
-4 directories, 7 files
+├── playbooks
+│   ├── common
+│   │   ├── pb.onboard.yml
+│   │   ├── pb.rsync.yml
+│   │   └── pb.snmp.yml
+│   ├── network
+│   │   ├── pb.deploy-vpn.yml
+│   │   └── pb.edgeos-update.yml
+│   ├── vsphere
+│   │   ├── pb.configure-vsphere.yml
+│   │   ├── pb.deploy-vm.yml
+│   │   ├── pb.get-vcenter-info.yml
+│   │   ├── pb.vsphere_to_nautobot.yml
+│   │   └── tasks
+│   │       └── deploy-vms.yml
+│   └── workstation
+│       ├── pb.clone-vm.yml
+│       ├── pb.get-vms.yml
+│       └── pb.start-vms.yml
 ```
 
 This folder is a mounted volume on the docker container used to execute the variety of playbooks available. This simplifies the ability to write, test and customize playbooks with a built Docker image.

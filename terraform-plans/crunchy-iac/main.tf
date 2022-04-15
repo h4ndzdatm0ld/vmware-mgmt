@@ -1,3 +1,13 @@
+terraform {
+  cloud {
+    organization = "crunchy-org"
+
+    workspaces {
+      name = "crunchy-iac"
+    }
+  }
+}
+
 provider "vsphere" {
   user           = var.vsphere_user
   password       = var.vsphere_password
@@ -52,4 +62,8 @@ resource "vsphere_virtual_machine" "vm" {
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
   }
+  // provisioner "local-exec" {
+  //   command = "ansible-playbook -u ubuntu -i '${self.guest_ip_addresses[0]},' apache-install.yml"
+  // }
 }
+

@@ -123,7 +123,7 @@ variable "vm_cpu_sockets" {
 variable "vm_cpu_cores" {
   type        = number
   description = "The number of virtual CPUs cores per socket. (e.g. '1')"
-  default     = 2
+  default     = 4
 }
 
 variable "vm_cpu_hot_add" {
@@ -135,7 +135,7 @@ variable "vm_cpu_hot_add" {
 variable "vm_mem_size" {
   type        = number
   description = "The size for the virtual memory in MB. (e.g. '2048')"
-  default     = 4096
+  default     = 6144
 }
 
 variable "vm_mem_hot_add" {
