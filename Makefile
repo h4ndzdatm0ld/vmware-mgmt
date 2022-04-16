@@ -1,5 +1,4 @@
 SHELL := /bin/bash
-.PHONY: all_ubuntu
 
 base_ubuntu_dir = ./packer-builds/template-build
 ubuntu_vars = $(base_ubuntu_dir)/variables.pkr.hcl
@@ -17,4 +16,4 @@ base_tform_dir = ./terraform-plans/crunchy-iac/
 
 terraform_deploy:
 	terraform -chdir=$(base_tform_dir) init
-	terraform -chdir=$(base_tform_dir) apply --var="vsphere_password=$(VMWARE_PASSWORD)" -auto-approve
+	terraform -chdir=$(base_tform_dir) apply --var="vsphere_password=$(VMWARE_PASSWORD)" --var="vsphere_vm_name=$(VSPHERE_VM_NAME)" -auto-approve
