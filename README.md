@@ -78,6 +78,13 @@ Call the MAKE target to execute the packer build
 make ubuntu_base
 ```
 
+## Terraform
+
+Create the workspace in Terraform Cloud.
+Set to Local execution.
+Run the `terraform_plan` make target.
+Create PR and review. If everything looks good, merge and execute `terraform_deploy`.
+
 ## vMware Workstation Pro Playbooks
 Ensure that the VMWARE API is running.
 
