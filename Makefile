@@ -23,9 +23,6 @@ base_tform_dir = ./terraform-plans
 terraform_pre_clean:
 	rm -rf $(base_tform_dir)/$(VSPHERE_VM_NAME)/
 
-terraform_post_clean:
-	rm main.tf
-
 terraform_copy:
 	cp -r $(base_tform_dir)/crunchy-iac $(base_tform_dir)/$(VSPHERE_VM_NAME)/
 	rm -rf $(base_tform_dir)/$(VSPHERE_VM_NAME)/.terraform
@@ -36,8 +33,13 @@ terraform_copy:
 	sed -i 's/crunchy-iac/$(VSPHERE_VM_NAME)/g' main.tf
 	mv main.tf $(base_tform_dir)/$(VSPHERE_VM_NAME)/main.tf
 
+terraform_init_plan:
+	terraform -chdir=$(base_tform_dir)/$(VSPHERE_VM_NAME) init
+	terraform -chdir=$(base_tform_dir)/$(VSPHERE_VM_NAME) plan --var="vsphere_password=$(VSPHERE_PASSWORD)" --var="vsphere_vm_name=$(VSPHERE_VM_NAME)"
+
 terraform_init_apply:
 	terraform -chdir=$(base_tform_dir)/$(VSPHERE_VM_NAME) init
 	terraform -chdir=$(base_tform_dir)/$(VSPHERE_VM_NAME) plan --var="vsphere_password=$(VSPHERE_PASSWORD)" --var="vsphere_vm_name=$(VSPHERE_VM_NAME)" --auto-approve
 
-terraform_deploy: terraform_pre_clean terraform_copy terraform_init_apply terraform_post_clean git_checkout_push
+terraform_plan: terraform_pre_clean terraform_copy terraform_init_plan git_checkout_push
+terraform_deploy: terraform_pre_clean terraform_copy terraform_init_apply git_checkout_push
