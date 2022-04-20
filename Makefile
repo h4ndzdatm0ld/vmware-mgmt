@@ -39,7 +39,7 @@ terraform_init_plan:
 
 terraform_init_apply:
 	terraform -chdir=$(base_tform_dir)/$(VSPHERE_VM_NAME) init
-	terraform -chdir=$(base_tform_dir)/$(VSPHERE_VM_NAME) plan --var="vsphere_password=$(VSPHERE_PASSWORD)" --var="vsphere_vm_name=$(VSPHERE_VM_NAME)" --auto-approve
+	terraform -chdir=$(base_tform_dir)/$(VSPHERE_VM_NAME) apply --var="vsphere_password=$(VSPHERE_PASSWORD)" --var="vsphere_vm_name=$(VSPHERE_VM_NAME)" --auto-approve
 
 terraform_plan: terraform_pre_clean terraform_copy terraform_init_plan git_checkout_push
 terraform_deploy: terraform_pre_clean terraform_copy terraform_init_apply git_checkout_push
