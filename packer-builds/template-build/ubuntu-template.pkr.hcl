@@ -46,7 +46,7 @@ source "vsphere-iso" "ubuntu-template" {
 
   // Virtual Machine Settings
   guest_os_type        = var.vm_guest_os_type
-  vm_name              = "template-${var.vm_guest_os_family}-${var.vm_guest_os_name}-${var.vm_guest_os_version}-v${local.build_version}"
+  vm_name              = var.vm_template_name
   firmware             = var.vm_firmware
   CPUs                 = var.vm_cpu_sockets
   cpu_cores            = var.vm_cpu_cores
@@ -126,7 +126,7 @@ build {
     environment_vars = [
       "BUILD_USERNAME=${var.build_username}",
     ]
-    scripts           = ["${abspath(path.root)}/scripts/user.sh", "${abspath(path.root)}/scripts/cleanup-root.sh", "${abspath(path.root)}/scripts/iac.sh", "${abspath(path.root)}/scripts/ssh.sh", "${abspath(path.root)}/scripts/setup.sh", "${abspath(path.root)}/scripts/docker.sh", "${abspath(path.root)}/scripts/docker-compose.sh", "${abspath(path.root)}/scripts/python-utils.sh", "${abspath(path.root)}/scripts/omzsh.sh"]
+    scripts           = ["${abspath(path.root)}/scripts/user.sh", "${abspath(path.root)}/scripts/cleanup-root.sh", "${abspath(path.root)}/scripts/iac.sh", "${abspath(path.root)}/scripts/ssh.sh", "${abspath(path.root)}/scripts/setup.sh", "${abspath(path.root)}/scripts/docker.sh", "${abspath(path.root)}/scripts/docker-compose.sh", "${abspath(path.root)}/scripts/python-utils.sh", ]
     expect_disconnect = true
   }
   # provisioner "ansible" {

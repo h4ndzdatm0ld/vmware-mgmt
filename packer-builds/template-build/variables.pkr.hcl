@@ -22,6 +22,13 @@ variable "vsphere_password" {
   sensitive   = true
 }
 
+variable "vm_template_name" {
+  type        = string
+  description = "VM Template Name"
+  sensitive   = true
+  default     = "template-${var.vm_guest_os_family}-${var.vm_guest_os_name}-${var.vm_guest_os_version}-v${local.build_version}"
+
+}
 variable "vsphere_insecure_connection" {
   type        = bool
   description = "Do not validate vCenter Server TLS certificate."
