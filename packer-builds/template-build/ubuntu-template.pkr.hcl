@@ -14,6 +14,7 @@ locals {
   build_version = formatdate("YY.MM", timestamp())
   manifest_date = formatdate("YYYY-MM-DD hh:mm:ss", timestamp())
   manifest_path = "${path.cwd}/packer-builds/manifests/"
+  vm_template_name_local = "${var.vm_template_name}-${var.vm_guest_os_family}-${var.vm_guest_os_name}-${var.vm_guest_os_version}-v${local.build_version}-${local.build_date}"
   data_source_content = {
     "/meta-data" = file("${abspath(path.root)}/data/meta-data")
     "/user-data" = templatefile("${abspath(path.root)}/data/user-data.pkrtpl.hcl", {
@@ -46,7 +47,7 @@ source "vsphere-iso" "ubuntu-template" {
 
   // Virtual Machine Settings
   guest_os_type        = var.vm_guest_os_type
-  vm_name              = var.vm_template_name
+  vm_name              = local.vm_template_name_local
   firmware             = var.vm_firmware
   CPUs                 = var.vm_cpu_sockets
   cpu_cores            = var.vm_cpu_cores
