@@ -18,7 +18,8 @@ variable "vsphere_server" {
 
 variable "vsphere_datastore" {
   type = string
-  default = "Crunchy"
+  // default = "Crunchy"
+  default = "DEVPOP-DATASTORE"
 }
 
 variable "vsphere_cluster" {
@@ -28,7 +29,8 @@ variable "vsphere_cluster" {
 
 variable "vsphere_network" {
   type = string
-  default = "CrunchyMgmt"
+  // default = "CrunchyMgmt"
+  default = "VM Network"
 }
 
 variable "vsphere_datacenter" {
@@ -46,7 +48,7 @@ variable "vsphere_vm_name" {
 
 variable "vsphere_vm_template" {
   type = string
-  default = "template-linux-ubuntu-21.10-v22.04"
+  default = "template-linux-ubuntu-21.10-v22.04-2022-04-26 17:03 UTC"
 }
 
 variable "vsphere_vm_guest_id" {
