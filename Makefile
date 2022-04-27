@@ -27,8 +27,8 @@ terraform_copy:
 	cp -r $(base_tform_dir)/crunchy-iac $(base_tform_dir)/$(VSPHERE_VM_NAME)/
 	rm -rf $(base_tform_dir)/$(VSPHERE_VM_NAME)/.terraform
 	rm $(base_tform_dir)/$(VSPHERE_VM_NAME)/.terraform.lock.hcl
-	rm $(base_tform_dir)/$(VSPHERE_VM_NAME)/terraform.tfstate
-	rm $(base_tform_dir)/$(VSPHERE_VM_NAME)/terraform.tfstate.backup
+	# rm $(base_tform_dir)/$(VSPHERE_VM_NAME)/terraform.tfstate
+	# rm $(base_tform_dir)/$(VSPHERE_VM_NAME)/terraform.tfstate.backup
 	mv $(base_tform_dir)/$(VSPHERE_VM_NAME)/main.tf ./
 	sed -i 's/crunchy-iac/$(VSPHERE_VM_NAME)/g' main.tf
 	mv main.tf $(base_tform_dir)/$(VSPHERE_VM_NAME)/main.tf
