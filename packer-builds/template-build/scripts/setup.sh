@@ -10,11 +10,12 @@ fi
 if [ -f /var/log/lastlog ]; then
 cat /dev/null > /var/log/lastlog
 fi
-# Cleans SSH keys.
-echo '> Cleaning SSH keys ...'
-rm -f /etc/ssh/ssh_host_*
-ssh-keygen -A
-systemctl restart sshd
+
+# # Cleans SSH keys.
+# echo '> Cleaning SSH keys ...'
+# rm -f /etc/ssh/ssh_host_*
+# ssh-keygen -A
+# systemctl restart sshd
 
 # Sets hostname to localhost.
 echo '> Setting hostname to localhost ...'

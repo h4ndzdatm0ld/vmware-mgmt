@@ -22,6 +22,13 @@ variable "vsphere_password" {
   sensitive   = true
 }
 
+variable "vm_template_name" {
+  type        = string
+  description = "VM Template Name"
+  sensitive   = true
+  default     = "template"
+}
+
 variable "vsphere_insecure_connection" {
   type        = bool
   description = "Do not validate vCenter Server TLS certificate."
@@ -44,13 +51,15 @@ variable "vsphere_cluster" {
 variable "vsphere_datastore" {
   type        = string
   description = "The name of the target vSphere datastore. (e.g. 'sfo-w01-cl01-vsan01')"
-  default     = "Crunchy"
+  # default     = "Crunchy"
+  default = "DEVPOP-DATASTORE"
 }
 
 variable "vsphere_network" {
   type        = string
   description = "The name of the target vSphere network segment. (e.g. 'sfo-w01-dhcp')"
-  default     = "CrunchyMgmt"
+  # default     = "CrunchyMgmt"
+  default = "VM Network"
 }
 
 variable "vsphere_folder" {
@@ -223,7 +232,8 @@ variable "common_content_library_skip_export" {
 variable "common_iso_datastore" {
   type        = string
   description = "The name of the source vSphere datastore for ISO images. (e.g. 'sfo-w01-cl01-nfs01')"
-  default     = "Crunchy"
+  # default     = "Crunchy"
+  default = "DEVPOP-DATASTORE"
 }
 
 variable "data_source_content" {
