@@ -33,3 +33,4 @@ services:
     volumes:
       - "./:/usr/src/app"
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:latest}
+    
