@@ -1,46 +1,38 @@
-# Ansible Project: `VMWare Mgmt`
+# VMWare Mgmt
 
-VMWare Management with Ansible
+VMWare Management with Ansible, Packer and Terraform
 
 Personal project used to manage my local VMWare Workstation Pro & ESXI/vSphere instances. Majority of the documentation here is specific to my home network.
 
 ## Requirements
 
-- Ansible >= 2.9
-
-**Collections:**
-
-- "qsypoq.vmware_desktop"
-- "vmware.vmware_rest"
-
----
-
-## Project features
-
-- [Roles](roles/README.md)
-- [Modules](plugins/modules/README.md)
-- [Filters](plugins/filters/README.md)
+- Docker
+- Docker-Compose
 
 ---
 ## General
-The folder structure for the playbooks, reside under `playbooks' and follow the pattern based on env, either `workstation` or `vsphere`.
+The folder structure for the playbooks, reside under `playbooks` and follow the pattern based on env, either `workstation` or `vsphere`.
 
 ```bash
-➜  playbooks git:(vsphere) ✗ tree
-.
-├── common
-│   └── pb.onboard.yml
-├── network
-│   └── pb.edgeos-update.yml
-├── vsphere
-│   ├── pb.deploy-vm.yml
-│   └── pb.get-vcenter-info.yml
-└── workstation
-    ├── pb.clone-vm.yml
-    ├── pb.get-vms.yml
-    └── pb.start-vms.yml
-
-4 directories, 7 files
+├── playbooks
+│   ├── common
+│   │   ├── pb.onboard.yml
+│   │   ├── pb.rsync.yml
+│   │   └── pb.snmp.yml
+│   ├── network
+│   │   ├── pb.deploy-vpn.yml
+│   │   └── pb.edgeos-update.yml
+│   ├── vsphere
+│   │   ├── pb.configure-vsphere.yml
+│   │   ├── pb.deploy-vm.yml
+│   │   ├── pb.get-vcenter-info.yml
+│   │   ├── pb.vsphere_to_nautobot.yml
+│   │   └── tasks
+│   │       └── deploy-vms.yml
+│   └── workstation
+│       ├── pb.clone-vm.yml
+│       ├── pb.get-vms.yml
+│       └── pb.start-vms.yml
 ```
 
 This folder is a mounted volume on the docker container used to execute the variety of playbooks available. This simplifies the ability to write, test and customize playbooks with a built Docker image.
@@ -54,7 +46,6 @@ This PB connects to the edge-router and loops through a specified group and sets
 
 ## vSphere Playbooks
 The local env has an ESXI Server with vSphere provisioned. The Ansible Collections are more mature and robust and provide an incredible amount of flexibility and customization. This is the preferred method when deploying new VM's in my env.
-
 
 ### Deploying a new template
 
@@ -73,6 +64,27 @@ Variables that must be defined and can be overridden with `extra_vars`
 
 After the playbook has been deployed, run the `common` playbook, `pb.onboard.yml` to update all the necessary items.
 
+## Packer Build
+
+Export the password for vSphere
+
+```bash
+export VMWARE_PASSWORD=....
+```
+
+Call the MAKE target to execute the packer build
+
+```bash
+make ubuntu_base
+```
+
+## Terraform
+
+First, you must create the workspace in Terraform Cloud and set to `Local` execution. Without this, you will receive errors as the execution will happen in terraform cloud.
+
+Run the `terraform_plan` make target
+
+ If everything looks good, and you want to deploy, execute `terraform_deploy`
 
 ## vMware Workstation Pro Playbooks
 Ensure that the VMWARE API is running.
@@ -95,9 +107,6 @@ Included in template:
     - Python3
     - Pip
     
-The next steps:
-
-- TODO: Add instance into Nautobot.
 
 ### Examples
 
@@ -128,24 +137,3 @@ export ansible_user=...[STANDARD ANSIBLE]
 
 `WORKSTATION_PROJECT_DIR` must match the default location for Virtual Machines in Workstation Env.
 ![VM Location](docs/default_location.png)
-
-## Testing
-
-For testing guidelines explanation see [Testing](tests/README.md)
-
----
-
-## Development and Contribution Guidelines
-
-It is a standard Ansible Project. So best practices are found [here](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html).
-
-Steps:
-
-### Test project
-
-After creation/modifications of roles, playbooks, or other modules are done, build and install the collection locally.
-
-```shell
-invoke build
-invoke local-install
-```

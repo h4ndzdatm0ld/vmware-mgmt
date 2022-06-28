@@ -88,19 +88,3 @@ COPY --from=ansible /usr/share /usr/share
 COPY . .
 
 ENTRYPOINT ["ansible-playbook"]
-
-FROM ubuntu:21.10 AS packer
-
-WORKDIR /usr/src/app
-
-RUN apt-get update && apt-get install -y curl gnupg2 lsb-release software-properties-common
-
-RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
-
-RUN apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-
-RUN apt-get update && apt-get install -y packer
-
-COPY . .
-
-ENTRYPOINT ["packer"]
