@@ -104,7 +104,7 @@
     - name: "Add FQDN to /etc/hosts"
       lineinfile:
         dest: "/etc/hosts"
-        regexp: '^127\.0\.1\.1'
+        regexp: '^127\.0\.1\.1' # yamllint disable
         line: "127.0.1.1 {{ inventory_hostname  | replace('_', '-') }} {{ inventory_hostname_short }}"
         state: "present"
 

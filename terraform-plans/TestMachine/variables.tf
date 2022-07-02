@@ -43,6 +43,7 @@ variable "vsphere_vm_name" {
   default = "crunchy-vm-tf"
 }
 
+
 ## VM Vars
 
 variable "vsphere_vm_template" {
