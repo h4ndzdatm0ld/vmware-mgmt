@@ -48,7 +48,7 @@ variable "vsphere_vm_name" {
 
 variable "vsphere_vm_template" {
   type = string
-  default = "template-linux-ubuntu-21.10-v22.04-2022-04-26 17:03 UTC"
+  default = "template-linux-ubuntu-21.10-v22.07-2022-07-02 13:22 UTC"
 }
 
 variable "vsphere_vm_guest_id" {
