@@ -15,7 +15,8 @@ git_checkout_push:
 # Base image to feed into ubuntu jobs
 ubuntu_base:
 	PACKER_LOG=1
-	packer build -force -var "vsphere_password=$(VSPHERE_PASSWORD)" -var$(base_ubuntu_dir)
+	packer init $(base_ubuntu_dir)
+	packer build -force -var "vsphere_password=$(VSPHERE_PASSWORD)" $(base_ubuntu_dir)
 
 # Terraform
 base_tform_dir = ./terraform-plans
