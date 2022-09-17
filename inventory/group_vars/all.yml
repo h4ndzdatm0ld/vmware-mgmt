@@ -3,7 +3,6 @@ ansible_ssh_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
 ansible_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
 ansible_user: "{{ lookup('env', 'ANSIBLE_USER') }}"
 ansible_become_password: "{{ lookup('env', 'ANSIBLE_SSH_PASSWORD') }}"
-
 # This is used for the mount point from vmware-workstation pro on devpop
 shared_media: false
 nameservers:
@@ -14,7 +13,6 @@ nameservers:
   - "1.1.1.1"
 mgmt_subnet_mask: "255.255.255.0"
 mgmt_subnet_prefix: "24"
-
 networks:
   crunchy_mgmt: "192.168.100.0/24"
   data_closet: "192.168.2.0/23"

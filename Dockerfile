@@ -4,11 +4,11 @@ FROM python:3.8 as base
 
 WORKDIR /usr/src/app
 
-# Install poetry for dep management
 RUN pip install -U pip  && \
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    curl -sSL https://install.python-poetry.org  | python3 -
 
-ENV PATH="$PATH:/root/.poetry/bin"
+ENV PATH="/root/.local/bin:$PATH"
+
 RUN poetry config virtualenvs.create false
 
 # Install project manifest
