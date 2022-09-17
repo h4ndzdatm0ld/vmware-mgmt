@@ -40,7 +40,7 @@ variable "vsphere_insecure_connection" {
 variable "vsphere_datacenter" {
   type        = string
   description = "The name of the target vSphere datacenter. (e.g. 'sfo-w01-dc01')"
-  default     = "CrunchyDatacenter"
+  default     = "CrunchyDataCenter"
 }
 
 variable "vsphere_cluster" {

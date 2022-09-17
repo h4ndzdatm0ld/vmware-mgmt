@@ -6,7 +6,7 @@
 // Guest Operating System Metadata
 vm_guest_os_family  = "linux"
 vm_guest_os_name    = "ubuntu"
-vm_guest_os_version = "21.10"
+vm_guest_os_version = "22.04.1"
 
 // Virtual Machine Guest Operating System Setting
 vm_guest_os_type = "ubuntu64Guest"
@@ -26,10 +26,9 @@ vm_network_card          = "vmxnet3"
 
 // Removable Media Settings
 iso_path           = "ISOs/"
-iso_file           = "ubuntu-21.10-live-server-amd64.iso"
+iso_file           = "ubuntu-22.04.1-live-server-amd64.iso"
 iso_checksum_type  = "sha256"
 iso_checksum_value = "e84f546dfc6743f24e8b1e15db9cc2d2c698ec57d9adfb852971772d1ce692d4"
-
 
 // Boot Settings
 vm_boot_order = "disk,cdrom"
@@ -56,7 +55,7 @@ common_remove_cdrom     = true
 data_source_content     = "http"
 
 // vcenter
-vsphere_cluster             = "HeshLawCluster"
+vsphere_cluster             = "CrunchyCluster"
 vsphere_endpoint            = "vcenter.heshlaw.local"
 vsphere_username            = "administrator@heshlaw.local"
 vsphere_insecure_connection = true
