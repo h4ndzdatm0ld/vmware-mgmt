@@ -24,7 +24,7 @@ variable "vsphere_datastore" {
 
 variable "vsphere_cluster" {
   type = string
-  default = "HeshLawCluster"
+  default = "CrunchyCluster"
 }
 
 variable "vsphere_network" {
@@ -47,7 +47,7 @@ variable "vsphere_vm_name" {
 
 variable "vsphere_vm_template" {
   type = string
-  default = "template-linux-ubuntu-22.04.1-v22.09-2022-09-17 05:36 UTC"
+  default = "template-linux-ubuntu-22.04.1-v22.09-2022-09-17 15:45 UTC"
 }
 
 variable "vsphere_vm_guest_id" {

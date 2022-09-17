@@ -39,9 +39,19 @@ make ubuntu_base VSPHERE_PASSWORD=SomePassword
 
 First, you must create the workspace in Terraform Cloud and set it to `Local` execution. Without this, you will receive errors as the execution will happen in terraform cloud.
 
-Run the `terraform_plan` make target
+There are two ways to run the Terraform Executions.
 
-If everything looks good, and you want to deploy, execute `terraform_deploy`
+1. Meant to be used w/ local Rundeck execution that provides an easy interface to override variables.
+
+```bash
+make terraform_deploy --{pass in all the vars to replace}
+```
+
+For quick local testing with all defaults set for `crunchy-vm-tf`
+
+```bash
+make terraform_local_deploy VSPHERE_PASSWORD=xxx
+```
 
 ## Example Env Variables
 
