@@ -28,19 +28,16 @@ exclude = '''
 [tool.poetry]
 name = "vmware-mgmt"
 version = "0.1.0"
-description = "VMWare Management with Ansible"
+description = "VMWare Management"
 authors = ["Hugo Tinoco <hugotinoco@icloud.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
-# NOTE: By default with this spec will go to 2.10
-ansible = "^4.2.0"
-# NOTE: Jinja2 has to be explicitly installed in ansible 2.10
-Jinja2 = "^2.11.2"
+python = "^3.8"
 pyvmomi = "^7.0.3"
 aiohttp = "^3.8.1"
-pynautobot = "^1.0.4"
-paramiko = "^2.10.1"
+ansible-core = "^2.13.4"
+ansible-pylibssh = "^1.0.0"
+pynautobot = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 ansible-lint = "*"
@@ -49,9 +46,9 @@ bandit = "*"
 pylint = "*"
 pytest = "*"
 yamllint = "*"
-flake8 = "^4.0.1"
-black = "^21.11b1"
-pydocstyle = "^6.1.1"
+flake8 = "*"
+black = "*"
+pydocstyle = "*"
 
 [tool.pylint.basic]
 # No docstrings required for private methods (Pylint default), or for test_ functions, or for inner Meta classes.

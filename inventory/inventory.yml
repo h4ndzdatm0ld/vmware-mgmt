@@ -6,33 +6,9 @@ all:
         EdgeRouterX:
           ansible_host: "192.168.0.1"
           ansible_network_os: "edgeos"
-    servers:
-      children:
-        # servers_workstation:
-        #   hosts:
-        servers_esxi:
-          hosts:
-            jenkins:
-              ansible_host: "192.168.100.147"
-            nautobot-ipfabric:
-              ansible_host: "192.168.100.197"
-            nautobot-aws:
-              ansible_host: "192.168.100.140"
-            nautobot-nvidia:
-              ansible_host: "192.168.100.141"
-            nautobot-dev:
-              ansible_host: "192.168.100.220"
-            rundeck-dev:
-              ansible_host: "192.168.100.186"
-            job-runner-01:
-              ansible_host: "192.168.100.166"
-            rundeck:
-              ansible_host: "192.168.100.233"
-            hashicorp-vault:
-              ansible_host: "192.168.100.131"
-        network:
-          hosts:
-            uisp:
-              ansible_host: "192.168.100.249"
-            nautobot:
-              ansible_host: "192.168.100.238"
+    network:
+      hosts:
+        uisp:
+          ansible_host: "192.168.100.249"
+        nautobot:
+          ansible_host: "192.168.100.238"
