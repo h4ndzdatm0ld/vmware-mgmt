@@ -47,16 +47,6 @@ Run the `terraform_plan` make target
 
 If everything looks good, and you want to deploy, execute `terraform_deploy`
 
-## vMware Workstation Pro Playbooks - DEPRECATED
-
-Ensure that the VMWARE API is running.
-
-The initial run will require -C flag to configure user/password.
-
-```bash
-vmrest -c workstationapi-cert.pem -k workstationapi-key.pem
-```
-
 ## Example Env Variables
 
 There is an example file inside the docs folder of the repository at `docs/example-env.txt`.
