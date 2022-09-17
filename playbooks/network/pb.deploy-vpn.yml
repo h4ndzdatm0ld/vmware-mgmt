@@ -5,9 +5,9 @@
   gather_facts: false
   connection: "network_cli"
   vars:
-    VPN_USER: "{{ lookup('env', 'VPN_USER') }}"
-    VPN_PASSWORD: "{{ lookup('env', 'VPN_PASSWORD') }}"
-    PRE_SHARED_SECRET: "{{ lookup('env', 'PRE_SHARED_SECRET') }}"
+    vpn_user: "{{ lookup('env', 'VPN_USER') }}"
+    vpn_password: "{{ lookup('env', 'VPN_PASSWORD') }}"
+    pre_shared_secret: "{{ lookup('env', 'PRE_SHARED_SECRET') }}"
 
   tasks:
     - name: "COLLECT FACTS"
@@ -15,7 +15,7 @@
         gather_subset: all
 
     - name: "DEBUG FACTS"
-      debug:
+      ansible.builtin.debug:
         var: "{{ item }}"
       loop:
         - "ansible_net_commits"
@@ -88,13 +88,13 @@
     - name: "CONFIGURE L2TP"
       community.network.edgeos_config:
         lines:
-          - "set vpn l2tp remote-access authentication local-users username {{ VPN_USER }} password {{ VPN_PASSWORD }}"
+          - "set vpn l2tp remote-access authentication local-users username {{ vpn_user }} password {{ vpn_password }}"
           - "set vpn l2tp remote-access authentication mode local"
           - "set vpn l2tp remote-access client-ip-pool start {{ vpn_pool['start'] }}"
           - "set vpn l2tp remote-access client-ip-pool stop {{ vpn_pool['end'] }}"
           - "set vpn l2tp remote-access dhcp-interface eth0"
           - "set vpn l2tp remote-access ipsec-settings authentication mode pre-shared-secret"
-          - "set vpn l2tp remote-access ipsec-settings authentication pre-shared-secret {{ PRE_SHARED_SECRET }}"
+          - "set vpn l2tp remote-access ipsec-settings authentication pre-shared-secret {{ pre_shared_secret }}"
           - "set vpn l2tp remote-access ipsec-settings ike-lifetime 3600"
           - "set vpn l2tp remote-access mtu 1420"
 

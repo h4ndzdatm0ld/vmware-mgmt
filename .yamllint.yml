@@ -47,7 +47,6 @@ rules:
   key-duplicates: "enable"
   key-ordering: "disable"
   line-length:
-    # Extra long lines for integration tests assertions
     max: 200
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: false
@@ -60,3 +59,5 @@ rules:
   trailing-spaces: "enable"
   truthy:
     level: "warning"
+ignore: |
+  .git

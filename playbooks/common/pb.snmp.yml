@@ -4,7 +4,7 @@
   become: true
   become_user: "root"
   vars:
-    COMMUNITY: "{{ lookup('env', 'COMMUNITY') }}"
+    community: "{{ lookup('env', 'COMMUNITY') }}"
 
   tasks:
     - name: "INSTALL SNMP PACKAGES"
@@ -40,7 +40,7 @@
       lineinfile:
         path: "/etc/snmp/snmpd.conf"
         regexp: "^"
-        line: "rocommunity {{ COMMUNITY }} 127.0.0.1"
+        line: "rocommunity {{ community }} 127.0.0.1"
         state: "present"
         backup: "yes"
       become: true
@@ -55,17 +55,19 @@
       register: "START_SNMP"
 
     - name: "SNMP WALK"
-      ansible.builtin.shell: "snmpwalk -v 2c -c {{ COMMUNITY }} localhost"
+      ansible.builtin.shell: "snmpwalk -v 2c -c {{ community }} localhost"
       register: "SNMP_WALK"
 
-      # - name: "DEBUG ALL"
-      #   debug:
-      #     var: "{{ item }}"
-      #   loop:
-      #     - "INSTALL_SNMP"
-      #     - "DOWNLOAD_MIBS"
-      #     - "SNMP_MIBS"
-      #     - "CONFIGURE_SNMP_AGENT"
-      #     - "CONFIGURE_SNMP_COMMUNITY"
-      #     - "START_SNMP"
-      #     - "SNMP_WALK"
+    - name: "DEBUG ALL"
+      ansible.builtin.debug:
+        var: "{{ item }}"
+      loop:
+        - "INSTALL_SNMP"
+        - "DOWNLOAD_MIBS"
+        - "SNMP_MIBS"
+        - "CONFIGURE_SNMP_AGENT"
+        - "CONFIGURE_SNMP_COMMUNITY"
+        - "START_SNMP"
+        - "SNMP_WALK"
+      tags:
+        - "debug"

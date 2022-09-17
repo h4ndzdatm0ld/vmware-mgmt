@@ -91,14 +91,6 @@ docker-compose build && docker-compose run cli pb.clone-vm.yml -e cloned_vm_name
 There is an example file inside the docs folder of the repository at `docs/example-env.txt`.
 
 ```bash
-export WORKSTATION_URL=... [API URL]
-export WORKSTRATION_USERNAME=...
-export WORKSTRATION_PASSWORD=...
-export WORKSTRATION_PORT=...
-export WORKSTATION_VALIDATE_CERTS=...
-export CLONED_VM_NAME=... [NAME OF THE NEW VM]
-export VM_ID=... [VM ID BEING USED AS TEMPLATE TO CLONE FROM]
-export WORKSTATION_PROJECT_DIR=... [PATH TO WHERE VM SHOULD BE STORED]
 export ansible_password=... [STANDARD ANSIBLE]
 export ansible_user=...[STANDARD ANSIBLE]
 ```
