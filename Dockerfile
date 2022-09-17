@@ -17,10 +17,6 @@ COPY pyproject.toml poetry.lock ./
 # Install production dependencies
 RUN poetry install --no-root --no-dev
 
-# VMWARE Package needs help...
-RUN pip install setuptools  && \
-    pip install --upgrade git+https://github.com/vmware/vsphere-automation-sdk-python.git
-
 FROM base AS test
 
 # Copy in the application code

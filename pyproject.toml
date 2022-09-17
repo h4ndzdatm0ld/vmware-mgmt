@@ -33,7 +33,6 @@ authors = ["Hugo Tinoco <hugotinoco@icloud.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pyvmomi = "^7.0.3"
 aiohttp = "^3.8.1"
 ansible-core = "^2.13.4"
 ansible-pylibssh = "^1.0.0"
