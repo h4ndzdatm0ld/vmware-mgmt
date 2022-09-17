@@ -35,7 +35,7 @@ variable "vsphere_network" {
 
 variable "vsphere_datacenter" {
   type = string
-  default = "CrunchyDatacenter"
+  default = "CrunchyDataCenter"
 }
 
 variable "vsphere_vm_name" {
