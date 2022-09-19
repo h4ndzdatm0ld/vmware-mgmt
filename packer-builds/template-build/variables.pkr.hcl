@@ -52,7 +52,7 @@ variable "vsphere_datastore" {
   type        = string
   description = "The name of the target vSphere datastore. (e.g. 'sfo-w01-cl01-vsan01')"
   # default     = "Crunchy"
-  default = "DEVPOP-DATASTORE"
+  default = "DEVPOP-DATASTORE-SSD-980"
 }
 
 variable "vsphere_network" {
@@ -233,7 +233,7 @@ variable "common_iso_datastore" {
   type        = string
   description = "The name of the source vSphere datastore for ISO images. (e.g. 'sfo-w01-cl01-nfs01')"
   # default     = "Crunchy"
-  default = "DEVPOP-DATASTORE"
+  default = "DEVPOP-DATASTORE-SSD-980"
 }
 
 variable "data_source_content" {
