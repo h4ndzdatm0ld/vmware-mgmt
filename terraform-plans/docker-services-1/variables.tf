@@ -19,7 +19,7 @@ variable "vsphere_server" {
 variable "vsphere_datastore" {
   type = string
   // default = "Crunchy"
-  default = "DEVPOP-DATASTORE"
+  default = "DEVPOP-DATASTORE-SSD-980"
 }
 
 variable "vsphere_cluster" {
