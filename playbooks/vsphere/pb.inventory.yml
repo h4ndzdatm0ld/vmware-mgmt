@@ -1,0 +1,12 @@
+---
+- name: "VCENTER INFORMATION & TESTS"
+  hosts: "CrunchyCluster"
+  gather_facts: false
+
+  tasks:
+    - name: "DEBUG"
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }}"
+    - name: "DEBUG"
+      ansible.builtin.debug:
+        msg: "{{ ansible_host }}"

@@ -1,0 +1,10 @@
+---
+plugin: networktocode.nautobot.inventory
+validate_certs: False
+config_context: False
+vm_query_filters:
+  - tag: ssot-synced-from-vsphere
+  - has_primary_ip: "true"
+group_by:
+  - cluster
+group_names_raw: True
