@@ -20,5 +20,9 @@
       ansible.builtin.apt:
         pkg:
           - "network-manager"
+          - "ca-certificates"
+          - "curl"
+          - "gnupg"
+          - "lsb-release"
         state: "latest"
       become: true
