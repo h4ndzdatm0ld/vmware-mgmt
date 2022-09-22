@@ -23,6 +23,8 @@ services:
       VPN_PASSWORD: ${VPN_PASSWORD}
       VPN_USER: ${VPN_USER}
       COMMUNITY: ${COMMUNITY}
+      NAUTOBOT_URL: ${NAUTOBOT_URL}
+      NAUTOBOT_TOKEN: ${NAUTOBOT_TOKEN}
     volumes:
       - "./:/usr/src/app"
     image: ${COMMIT_IMAGE:-h4ndzdatm0ld/vmware-mgmt:latest}
