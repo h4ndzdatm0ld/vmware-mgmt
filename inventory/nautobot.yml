@@ -8,3 +8,5 @@ vm_query_filters:
 group_by:
   - cluster
 group_names_raw: True
+compose:
+  ansible_network_os:
